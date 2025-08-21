@@ -1,3 +1,4 @@
+import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/views/pages/cart_page.dart';
 import 'package:e_commerce/views/pages/favorites_page.dart';
 import 'package:e_commerce/views/pages/home_page.dart';
@@ -47,7 +48,7 @@ class CustomBottomNavbar extends StatelessWidget {
             icon: Icon(CupertinoIcons.person_fill),
             inactiveIcon: Icon(CupertinoIcons.person),
             title: "My Profile",
-            activeForegroundColor: Theme.of(context).primaryColor
+            activeForegroundColor: Theme.of(context).primaryColor,
           ),
         ),
       ],
