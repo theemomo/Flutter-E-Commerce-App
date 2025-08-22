@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/home_cubit/home_cubit.dart';
-import 'package:e_commerce/views/widgets/product_item.dart';
+import 'package:e_commerce/views/widgets/product_grid_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -12,6 +13,7 @@ class HomeTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
     final size = MediaQuery.of(context).size;
+
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: BlocProvider.of<HomeCubit>(context),
       builder: (context, state) {
@@ -92,8 +94,18 @@ class HomeTabView extends StatelessWidget {
                         : 0.5,
                   ),
                   itemCount: state.arrivalProducts.length,
-                  itemBuilder: (context, index) =>
-                      ProductItem(productItem: state.arrivalProducts[index]),
+                  itemBuilder: (context, index) => 
+                  InkWell(
+                    child: ProductGridItem(
+                      productItem: state.arrivalProducts[index],
+                    ),
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).pushNamed(
+                        AppRoutes.productDetailsRoute,
+                        arguments: state.arrivalProducts[index].id,
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

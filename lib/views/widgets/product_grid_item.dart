@@ -3,9 +3,9 @@ import 'package:e_commerce/models/product_item_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductGridItem extends StatelessWidget {
   final ProductItemModel productItem;
-  const ProductItem({super.key, required this.productItem});
+  const ProductGridItem({super.key, required this.productItem});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +39,11 @@ class ProductItem extends StatelessWidget {
                 top: orientation == Orientation.portrait ? 5 : 0,
                 right: orientation == Orientation.portrait ? 0 : 20,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 6.0, ),
+                  padding: const EdgeInsets.only(top: 6.0),
                   child: SizedBox(
-                    height: orientation == Orientation.portrait ? constrains.maxHeight * 0.1 : constrains.maxHeight * 0.13,
+                    height: orientation == Orientation.portrait
+                        ? constrains.maxHeight * 0.1
+                        : constrains.maxHeight * 0.13,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,

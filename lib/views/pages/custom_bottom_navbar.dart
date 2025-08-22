@@ -1,4 +1,3 @@
-import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/views/pages/cart_page.dart';
 import 'package:e_commerce/views/pages/favorites_page.dart';
 import 'package:e_commerce/views/pages/home_page.dart';
