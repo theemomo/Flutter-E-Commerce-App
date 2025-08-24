@@ -1,9 +1,8 @@
-import 'package:e_commerce/view_models/product_details_cubit/product_details_cubit.dart';
+import 'package:e_commerce/views/pages/cart_page.dart';
 import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
 import 'package:e_commerce/views/pages/product_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app_routes.dart';
 
 class AppRouter {
@@ -21,7 +20,9 @@ class AppRouter {
           settings: settings,
           builder: (_) => ProductDetailsPage(productId: productId),
         );
-
+        
+      case AppRoutes.cartRoute:
+        return CupertinoPageRoute(builder: (_) => const CartPage());
       default:
         return CupertinoPageRoute(
           settings: settings,
@@ -31,4 +32,3 @@ class AppRouter {
     }
   }
 }
-

@@ -11,7 +11,6 @@ class CustomBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
     return PersistentTabView(
       tabs: [
         PersistentTabConfig(
@@ -28,7 +27,7 @@ class CustomBottomNavbar extends StatelessWidget {
           item: ItemConfig(
             icon: Icon(CupertinoIcons.cube_box_fill),
             inactiveIcon:Icon(CupertinoIcons.cube_box),
-            title: "My Orders",
+            title: "Orders",
             activeForegroundColor: Theme.of(context).primaryColor
           ),
         ),
@@ -46,7 +45,7 @@ class CustomBottomNavbar extends StatelessWidget {
           item: ItemConfig(
             icon: Icon(CupertinoIcons.person_fill),
             inactiveIcon: Icon(CupertinoIcons.person),
-            title: "My Profile",
+            title: "Profile",
             activeForegroundColor: Theme.of(context).primaryColor,
           ),
         ),

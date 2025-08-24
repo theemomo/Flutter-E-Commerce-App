@@ -25,7 +25,10 @@ class ProductDetailsPage extends StatelessWidget {
       },
       // ! creating the BlocBuilder
       child: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-        buildWhen: (previous, current) => current is! QuantityCounterLoaded,
+        buildWhen: (previous, current) =>
+            current is ProductDetailsLoading ||
+            current is ProductDetailsLoaded ||
+            current is ProductDetailsError,
         builder: (context, state) {
           // ! when the page is loading
           if (state is ProductDetailsLoading) {
@@ -153,7 +156,7 @@ class ProductDetailsPage extends StatelessWidget {
                                       } else if (state
                                           is ProductDetailsLoaded) {
                                         return Counter(
-                                          counterValue: state.product.quantity,
+                                          counterValue: 1,
                                           productId: productId,
                                           cubit:
                                               BlocProvider.of<
@@ -196,29 +199,75 @@ class ProductDetailsPage extends StatelessWidget {
                                 style: Theme.of(context).textTheme.titleMedium!
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: ProductSize.values
-                                    .map(
-                                      (size) => InkWell(
-                                        onTap: () {},
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.grey2,
-                                            ),
+                              // ! creating the BlocBuilder for size selection
+                              BlocBuilder<
+                                ProductDetailsCubit,
+                                ProductDetailsState
+                              >(
+                                bloc: BlocProvider.of<ProductDetailsCubit>(
+                                  context,
+                                ),
+                                buildWhen: (previous, current) =>
+                                    current is SizeSelected ||
+                                    current is ProductDetailsLoaded,
+                                builder: (context, state) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: ProductSize.values
+                                        .map(
+                                          (size) => InkWell(
+                                            onTap: () {
+                                                BlocProvider.of<
+                                                      ProductDetailsCubit
+                                                    >(context)
+                                                    .selectSize(size);
+                                            },
                                             child: Padding(
-                                              padding: const EdgeInsets.all(12),
-                                              child: Text(size.name),
+                                              padding: const EdgeInsets.all(
+                                                4.0,
+                                              ),
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor:
+                                                    state is SizeSelected &&
+                                                        state.size == size
+                                                    ? AppColors.primary
+                                                    : AppColors.grey2,
+
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                    12,
+                                                  ),
+                                                  child: Text(
+                                                    size.name,
+                                                    style:
+                                                        state is SizeSelected &&
+                                                            state.size == size
+                                                        ? Theme.of(context)
+                                                              .textTheme
+                                                              .labelMedium!
+                                                              .copyWith(
+                                                                color: Colors
+                                                                    .white,
+                                                              )
+                                                        : Theme.of(context)
+                                                              .textTheme
+                                                              .labelMedium!
+                                                              .copyWith(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
+                                        )
+                                        .toList(),
+                                  );
+                                },
                               ),
+                              // ! Discretion section
                               SizedBox(height: size.height * 0.02),
                               Text(
                                 productItem.description,
@@ -258,28 +307,128 @@ class ProductDetailsPage extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  ElevatedButton.icon(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(
-                                        context,
-                                      ).primaryColor,
-                                      foregroundColor: AppColors.white,
-                                      minimumSize: Size(180, 60),
-                                    ),
-                                    icon: Icon(
-                                      Icons.shopping_bag_outlined,
-                                      size: orientation == Orientation.portrait
-                                          ? size.height * 0.03
-                                          : size.height * 0.06,
-                                    ),
-                                    label: Text(
-                                      "Add to cart",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(color: AppColors.white),
-                                    ),
+                                  // ! Add to cart button
+                                  BlocBuilder<
+                                    ProductDetailsCubit,
+                                    ProductDetailsState
+                                  >(
+                                    // bloc: BlocProvider.of<ProductDetailsCubit>(context),
+                                    buildWhen: (previous, current) =>
+                                        current is ProductAddedToCart ||
+                                        current is ProductAddingToCart,
+                                    builder: (context, state) {
+                                      if (state is ProductAddingToCart) {
+                                        return ElevatedButton.icon(
+                                          onPressed: () {
+                                            null;
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Theme.of(
+                                              context,
+                                            ).primaryColor,
+                                            foregroundColor: AppColors.white,
+                                            minimumSize: Size(180, 60),
+                                          ),
+                                          icon: Center(
+                                            child:
+                                                CircularProgressIndicator.adaptive(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                        Color
+                                                      >(AppColors.white),
+                                                  strokeWidth: 3,
+                                                  constraints: BoxConstraints(
+                                                    minWidth: 24,
+                                                    minHeight: 24,
+                                                  ),
+                                                ),
+                                          ),
+                                          label: Text(
+                                            "Add to cart",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(
+                                                  color: AppColors.white,
+                                                ),
+                                          ),
+                                        );
+                                      } else if (state is ProductAddedToCart) {
+                                        return ElevatedButton.icon(
+                                          onPressed: () {
+                                            null;
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: AppColors.grey,
+                                            foregroundColor: AppColors.white,
+                                            minimumSize: Size(180, 60),
+                                          ),
+                                          icon: Icon(
+                                            Icons.done,
+                                            size:
+                                                orientation ==
+                                                    Orientation.portrait
+                                                ? size.height * 0.03
+                                                : size.height * 0.06,
+                                          ),
+                                          label: Text(
+                                            "Added to cart",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(
+                                                  color: AppColors.white,
+                                                ),
+                                          ),
+                                        );
+                                      } else {
+                                        return ElevatedButton.icon(
+                                          onPressed: () {
+                                            final cubit = BlocProvider.of<ProductDetailsCubit>(context);
+                                            if (cubit.selectedSize != null) {
+                                              cubit.addToCart(productId);
+                                            } else {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    "Please select a size",
+                                                  ),
+                                                  duration: Duration(
+                                                    seconds: 2,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Theme.of(
+                                              context,
+                                            ).primaryColor,
+                                            foregroundColor: AppColors.white,
+                                            minimumSize: Size(180, 60),
+                                          ),
+                                          icon: Icon(
+                                            Icons.shopping_bag_outlined,
+                                            size:
+                                                orientation ==
+                                                    Orientation.portrait
+                                                ? size.height * 0.03
+                                                : size.height * 0.06,
+                                          ),
+                                          label: Text(
+                                            "Add to cart",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(
+                                                  color: AppColors.white,
+                                                ),
+                                          ),
+                                        );
+                                      }
+                                    },
                                   ),
                                 ],
                               ),

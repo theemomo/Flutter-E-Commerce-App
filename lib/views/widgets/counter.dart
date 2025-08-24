@@ -17,13 +17,13 @@ class Counter extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.grey.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Container(
-          width: 100,
-          height: 25,
+          width: 90,
+          height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -33,7 +33,7 @@ class Counter extends StatelessWidget {
               ),
               Text(counterValue.toString()),
               InkWell(
-                child: Icon(Icons.remove, size: 20),
+                child: Icon(Icons.remove, size: 20, color: counterValue == 0 ? Colors.grey : null),
                 onTap: () {
                   if(counterValue != 0){
                     cubit.decrementCounter(productId);

@@ -1,5 +1,6 @@
 part of 'product_details_cubit.dart';
 
+// ! product details states
 sealed class ProductDetailsState {}
 
 final class ProductDetailsInitial extends ProductDetailsState {}
@@ -16,7 +17,26 @@ final class ProductDetailsError extends ProductDetailsState {
   ProductDetailsError({required this.message});
 }
 
+// ! counter section
+
 final class QuantityCounterLoaded extends ProductDetailsState {
   final int value;
   QuantityCounterLoaded({required this.value});
 }
+
+// ! size section
+
+final class SizeSelected extends ProductDetailsState {
+  final ProductSize size;
+  SizeSelected({required this.size});
+}
+
+// ! adding to cart button section
+
+final class ProductAddingToCart extends ProductDetailsState {}
+
+final class ProductAddedToCart extends ProductDetailsState {
+  final String id;
+  ProductAddedToCart({required this.id});
+}
+  

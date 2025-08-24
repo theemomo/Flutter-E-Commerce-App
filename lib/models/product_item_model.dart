@@ -8,8 +8,6 @@ class ProductItemModel {
   final double price;
   final bool isFav;
   final String category;
-  final int quantity;
-  final ProductSize? size;
 
   ProductItemModel({
     required this.id,
@@ -19,8 +17,6 @@ class ProductItemModel {
     required this.price,
     this.isFav = false,
     required this.category,
-    this.quantity = 1,
-    this.size,
   });
 
   ProductItemModel copyWith({
@@ -40,8 +36,6 @@ class ProductItemModel {
       imgUrl: imgUrl ?? this.imgUrl,
       price: price ?? this.price,
       category: category ?? this.category,
-      quantity: quantity ?? this.quantity,
-      size: size ?? this.size,
     );
   }
 }
