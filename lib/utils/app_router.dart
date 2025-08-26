@@ -1,4 +1,5 @@
-import 'package:e_commerce/views/pages/cart_page.dart';
+import 'package:e_commerce/views/pages/add_new_card_page.dart';
+import 'package:e_commerce/views/pages/checkout_page.dart';
 import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
 import 'package:e_commerce/views/pages/product_details_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,8 +22,15 @@ class AppRouter {
           builder: (_) => ProductDetailsPage(productId: productId),
         );
         
-      case AppRoutes.cartRoute:
-        return CupertinoPageRoute(builder: (_) => const CartPage());
+      case AppRoutes.checkoutRoute:
+        return CupertinoPageRoute(builder: (_) => const CheckoutPage());
+
+      case AppRoutes.addNewCardRoute:
+        return CupertinoPageRoute(
+          settings: settings,
+          builder: (_) => const AddNewCardPage(),
+        );
+
       default:
         return CupertinoPageRoute(
           settings: settings,

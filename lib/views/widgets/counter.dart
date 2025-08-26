@@ -21,7 +21,7 @@ class Counter extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
-        child: Container(
+        child: SizedBox(
           width: 90,
           height: 30,
           child: Row(

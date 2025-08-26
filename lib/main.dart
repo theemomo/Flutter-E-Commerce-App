@@ -1,6 +1,7 @@
 import 'package:e_commerce/utils/app_router.dart';
 import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,11 +17,18 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        primaryColor: Colors.deepPurple
+        primaryColor: Colors.deepPurple,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Colors.white
+        ),
+        
       ),
-      home: CustomBottomNavbar(),
+      home: const CustomBottomNavbar(),
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
-

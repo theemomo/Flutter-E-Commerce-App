@@ -6,6 +6,8 @@ class AppColors {
   static const white = Colors.white;
   static const green = Colors.green;
   static const blue = Colors.blue;
+  static const red = Colors.red;
   static const primary = Colors.deepPurple;
   static Color grey2 = Colors.grey.withOpacity(0.2);
 }
+  

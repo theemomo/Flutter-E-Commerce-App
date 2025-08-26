@@ -14,37 +14,37 @@ class CustomBottomNavbar extends StatelessWidget {
     return PersistentTabView(
       tabs: [
         PersistentTabConfig(
-          screen: HomePage(),
+          screen: const HomePage(),
           item: ItemConfig(
-            icon: Icon(CupertinoIcons.house_fill),
-            inactiveIcon: Icon(CupertinoIcons.home),
+            icon: const Icon(CupertinoIcons.house_fill),
+            inactiveIcon: const Icon(CupertinoIcons.home),
             title: "Home",
             activeForegroundColor: Theme.of(context).primaryColor
           ),
         ),
         PersistentTabConfig(
-          screen: CartPage(),
+          screen: const CartPage(),
           item: ItemConfig(
-            icon: Icon(CupertinoIcons.cube_box_fill),
-            inactiveIcon:Icon(CupertinoIcons.cube_box),
+            icon: const Icon(CupertinoIcons.cube_box_fill),
+            inactiveIcon: const Icon(CupertinoIcons.cube_box),
             title: "Orders",
             activeForegroundColor: Theme.of(context).primaryColor
           ),
         ),
         PersistentTabConfig(
-          screen: FavoritesPage(),
+          screen: const FavoritesPage(),
           item: ItemConfig(
-            icon: Icon(CupertinoIcons.heart_fill),
-            inactiveIcon: Icon(CupertinoIcons.heart),
+            icon: const Icon(CupertinoIcons.heart_fill),
+            inactiveIcon: const Icon(CupertinoIcons.heart),
             title: "Favorite",
             activeForegroundColor: Theme.of(context).primaryColor
           ),
         ),
         PersistentTabConfig(
-          screen: ProfilePage(),
+          screen: const ProfilePage(),
           item: ItemConfig(
-            icon: Icon(CupertinoIcons.person_fill),
-            inactiveIcon: Icon(CupertinoIcons.person),
+            icon: const Icon(CupertinoIcons.person_fill),
+            inactiveIcon: const Icon(CupertinoIcons.person),
             title: "Profile",
             activeForegroundColor: Theme.of(context).primaryColor,
           ),

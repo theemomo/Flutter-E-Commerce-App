@@ -26,3 +26,17 @@ final class CartQuantityUpdated extends CartState {
 
   const CartQuantityUpdated({required this.productId});
 }
+
+// final class CartDiscountApplied extends CartState {
+//   final List<AddToCartModel> cartItems;
+//   final double subtotal;
+//   final double discount;
+//   final double total;
+
+//   const CartDiscountApplied({
+//     required this.cartItems,
+//     required this.subtotal,
+//     required this.discount,
+//     required this.total,
+//   });
+// }

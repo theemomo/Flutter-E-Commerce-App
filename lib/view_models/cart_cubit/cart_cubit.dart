@@ -6,15 +6,17 @@ part 'cart_state.dart';
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
 
-  void getCartItems() {
-    emit(CartLoading());
-    // Simulate a network call
-    Future.delayed(Duration(seconds: 1), () {
-      final subtotal = dummyCart.fold(
+  double get _subtotal => dummyCart.fold(
         0.0,
         (sum, item) => sum + item.product.price * item.quantity,
       );
-      emit(CartLoaded(cartItems: dummyCart, subtotal: subtotal));
+
+  void getCartItems() {
+    emit(CartLoading());
+
+    Future.delayed(const Duration(seconds: 1), () {
+      emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal));
+      // emit(SubTotalUpdated(subtotal: _subtotal));
     });
   }
 
@@ -30,14 +32,8 @@ class CartCubit extends Cubit<CartState> {
     final index = dummyCart.indexOf(selectedItem);
     dummyCart[index] = updatedItem;
 
-    // first emit a temporary update state (optional, useful for animations)
     emit(CartQuantityUpdated(productId: productId));
-    final subtotal = dummyCart.fold(
-      0.0,
-      (sum, item) => sum + item.product.price * item.quantity,
-    );
-    // then emit the full cart state so UI rebuilds correctly
-    emit(CartLoaded(cartItems: dummyCart, subtotal: subtotal));
+    emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal));
   }
 
   void decrementCounter(String productId) {
@@ -56,10 +52,9 @@ class CartCubit extends Cubit<CartState> {
     }
 
     emit(CartQuantityUpdated(productId: productId));
-    final subtotal = dummyCart.fold(
-      0.0,
-      (sum, item) => sum + item.product.price * item.quantity,
-    );
-    emit(CartLoaded(cartItems: dummyCart, subtotal: subtotal));
+    emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal));
   }
+
+
+
 }
