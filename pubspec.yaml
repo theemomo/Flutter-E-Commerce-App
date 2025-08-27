@@ -17,6 +17,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_carousel_widget: ^3.1.0
   flutter_dash: ^1.0.0
+  flutter_native_splash: ^2.4.6
   persistent_bottom_nav_bar_v2: ^6.1.0
 
 dev_dependencies:
@@ -44,3 +45,16 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+
+
+
+flutter_native_splash:
+  color: "#673AB7"
+  fullscreen: true
+  image: assets/images/splash.png
+
+  android_12:
+    color: "#673AB7"
+    fullscreen: true
+    image: assets/images/splash.png

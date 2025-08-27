@@ -4,6 +4,7 @@ import 'package:e_commerce/views/pages/checkout_page.dart';
 import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
 import 'package:e_commerce/views/pages/login_page.dart';
 import 'package:e_commerce/views/pages/product_details_page.dart';
+import 'package:e_commerce/views/pages/register_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'app_routes.dart';
@@ -14,8 +15,8 @@ class AppRouter {
       case AppRoutes.loginRoute:
         return CupertinoPageRoute(builder: (_) => const LoginPage(), settings: settings);
 
-        // case AppRoutes.registerRoute:
-        // return CupertinoPageRoute(builder: (_) => const CustomBottomNavbar(), settings: settings);
+        case AppRoutes.registerRoute:
+        return CupertinoPageRoute(builder: (_) => const RegisterPage(), settings: settings);
 
       case AppRoutes.homeRoute:
         return CupertinoPageRoute(builder: (_) => const CustomBottomNavbar(), settings: settings);

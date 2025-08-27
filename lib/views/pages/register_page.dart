@@ -2,17 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/utils/app_routes.dart';
 import 'package:flutter/material.dart';
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
+    final TextEditingController usernameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -29,19 +29,51 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Login Account",
+                    "Create Account",
                     style: Theme.of(
                       context,
                     ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Please login with your registered account",
+                    "Start shopping with create your account",
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.grey,
                     ),
                   ),
                   const SizedBox(height: 40),
+                  Text(
+                    "Username",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    keyboardType: TextInputType.name,
+                    inputFormatters: const [],
+                    validator: (value) => value == null || value.isEmpty
+                        ? "Please Enter a Username"
+                        : null,
+                    controller: usernameController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person, color: AppColors.grey.withValues(alpha: 0.8)),
+                      fillColor: AppColors.grey.withValues(alpha: 0.1),
+                      filled: true,
+                      hintText: "Create your username",
+                      hintStyle: TextStyle(color: AppColors.grey.withValues(alpha: 0.8)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                        borderSide: const BorderSide(color: AppColors.red),
+                      ),
+                    ),
+                  ),
+          
+                  const SizedBox(height: 30),
                   Text(
                     "Email or Phone Number",
                     style: Theme.of(
@@ -98,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                       prefixIcon: Icon(Icons.lock, color: AppColors.grey.withValues(alpha: 0.8)),
                       fillColor: AppColors.grey.withValues(alpha: 0.1),
                       filled: true,
-                      hintText: "Enter Your Password",
+                      hintText: "Create Your Password",
                       hintStyle: TextStyle(color: AppColors.grey.withValues(alpha: 0.8)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16.0),
@@ -110,27 +142,15 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Forgot Password?",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  
+                  const SizedBox(height: 50),
                   SizedBox(
                     width: double.infinity,
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          Navigator.pushNamed(context, AppRoutes.homeRoute);
+                          Navigator.pushNamed(context, AppRoutes.loginRoute);
                         }
                         // debugPrint('${formKey.currentState}');
                       },
@@ -139,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                         foregroundColor: AppColors.white,
                       ),
                       child: Text(
-                        "Login",
+                        "Create Account",
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: AppColors.white,
                           fontWeight: FontWeight.w500,
@@ -147,15 +167,15 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Align(
                     alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.registerRoute);
+                        Navigator.of(context).pop();
                       },
                       child: Text(
-                        "Don't have an account? Register",
+                        "You have an account? Login",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w500,
