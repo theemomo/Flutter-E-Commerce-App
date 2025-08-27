@@ -28,9 +28,9 @@ class ProductGridItem extends StatelessWidget {
                     imageUrl: productItem.imgUrl,
                     fit: BoxFit.fill,
                     placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()),
+                        const Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) =>
-                        Center(child: Icon(Icons.error)),
+                        const Center(child: Icon(Icons.error)),
                   ),
                 ),
               ),
@@ -45,7 +45,7 @@ class ProductGridItem extends StatelessWidget {
                         ? constrains.maxHeight * 0.1
                         : constrains.maxHeight * 0.13,
                     child: DecoratedBox(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.grey,
                       ),
@@ -63,7 +63,7 @@ class ProductGridItem extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Text(
             productItem.name,
             style: Theme.of(

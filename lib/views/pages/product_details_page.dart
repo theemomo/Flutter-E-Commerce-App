@@ -32,7 +32,7 @@ class ProductDetailsPage extends StatelessWidget {
         builder: (context, state) {
           // ! when the page is loading
           if (state is ProductDetailsLoading) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: CircularProgressIndicator.adaptive()),
             );
             // ! when page have loaded
@@ -48,7 +48,7 @@ class ProductDetailsPage extends StatelessWidget {
                     color: AppColors.white,
                     shadows: [
                       Shadow(
-                        offset: Offset(2, 2),
+                        offset: const Offset(2, 2),
                         blurRadius: 3,
                         color: Colors.black.withOpacity(0.3),
                       ),
@@ -64,7 +64,7 @@ class ProductDetailsPage extends StatelessWidget {
                       color: AppColors.white,
                       shadows: [
                         Shadow(
-                          offset: Offset(2, 2),
+                          offset: const Offset(2, 2),
                           blurRadius: 3,
                           color: Colors.black.withOpacity(0.3),
                         ),
@@ -79,7 +79,7 @@ class ProductDetailsPage extends StatelessWidget {
                     color: AppColors.white,
                     shadows: [
                       Shadow(
-                        offset: Offset(2, 2),
+                        offset: const Offset(2, 2),
                         blurRadius: 3,
                         color: Colors.black.withOpacity(0.3),
                       ),
@@ -110,7 +110,7 @@ class ProductDetailsPage extends StatelessWidget {
                     padding: EdgeInsets.only(top: size.height * 0.55),
                     child: Container(
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
@@ -164,7 +164,7 @@ class ProductDetailsPage extends StatelessWidget {
                                               >(context),
                                         );
                                       } else {
-                                        return SizedBox.shrink();
+                                        return const SizedBox.shrink();
                                       }
                                     },
                                   ),
@@ -183,14 +183,14 @@ class ProductDetailsPage extends StatelessWidget {
                                           context,
                                         ).textTheme.labelLarge,
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.star,
                                         color: Colors.amber,
                                         size: 20,
                                       ),
                                     ],
                                   ),
-                                  Text("Available in stock"),
+                                  const Text("Available in stock"),
                                 ],
                               ),
                               SizedBox(height: size.height * 0.03),
@@ -327,9 +327,9 @@ class ProductDetailsPage extends StatelessWidget {
                                               context,
                                             ).primaryColor,
                                             foregroundColor: AppColors.white,
-                                            minimumSize: Size(180, 60),
+                                            minimumSize: const Size(180, 60),
                                           ),
-                                          icon: Center(
+                                          icon: const Center(
                                             child:
                                                 CircularProgressIndicator.adaptive(
                                                   valueColor:
@@ -361,7 +361,7 @@ class ProductDetailsPage extends StatelessWidget {
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: AppColors.grey,
                                             foregroundColor: AppColors.white,
-                                            minimumSize: Size(180, 60),
+                                            minimumSize: const Size(180, 60),
                                           ),
                                           icon: Icon(
                                             Icons.done,
@@ -391,7 +391,7 @@ class ProductDetailsPage extends StatelessWidget {
                                               ScaffoldMessenger.of(
                                                 context,
                                               ).showSnackBar(
-                                                SnackBar(
+                                                const SnackBar(
                                                   content: Text(
                                                     "Please select a size",
                                                   ),
@@ -407,7 +407,7 @@ class ProductDetailsPage extends StatelessWidget {
                                               context,
                                             ).primaryColor,
                                             foregroundColor: AppColors.white,
-                                            minimumSize: Size(180, 60),
+                                            minimumSize: const Size(180, 60),
                                           ),
                                           icon: Icon(
                                             Icons.shopping_bag_outlined,
@@ -444,7 +444,7 @@ class ProductDetailsPage extends StatelessWidget {
           } else if (state is ProductDetailsError) {
             return Scaffold(body: Center(child: Text(state.message)));
           } else {
-            return Scaffold(body: Center(child: Text("Page Not Found")));
+            return const Scaffold(body: Center(child: Text("Page Not Found")));
           }
         },
       ),

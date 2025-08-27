@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/models/location_item_model.dart';
 import 'package:e_commerce/models/payment_card_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/utils/app_routes.dart';
@@ -50,6 +51,36 @@ class CheckoutPage extends StatelessWidget {
     }
   }
 
+  Widget _buildShippingItem(context, {required LocationItemModel? chosenLocation}) {
+    if (chosenLocation == null) {
+      return EmptyShippingPayment(
+        title: 'Add a Shipping Address',
+        onTap: () {
+          Navigator.of(context).pushNamed(AppRoutes.addNewAddressRoute);
+        },
+      );
+    } else {
+      return Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CachedNetworkImage(imageUrl: chosenLocation.imgUrl, width: 80, height: 80),
+          const SizedBox(width: 25),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(chosenLocation.city, style: Theme.of(context).textTheme.bodyLarge),
+              const SizedBox(width: 8),
+              Text(
+                "${chosenLocation.city}, ${chosenLocation.country}",
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -77,13 +108,24 @@ class CheckoutPage extends StatelessWidget {
                   if (state.cartItems.isEmpty) {
                     return const Center(child: Text("Your cart is empty"));
                   }
+                  final chosenLocation = state.shippingAddress;
                   return SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
                         children: [
-                          CheckoutHeadlines(title: 'Address', onTap: () {}),
-                          EmptyShippingPayment(title: 'Add a Shipping Address', onTap: () {}),
+                          CheckoutHeadlines(
+                            title: 'Address',
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(AppRoutes.addNewAddressRoute)
+                                  .then(
+                                    (value) =>
+                                        BlocProvider.of<CheckoutCubit>(context).getCheckoutItems(),
+                                  );
+                            },
+                          ),
+                          _buildShippingItem(context, chosenLocation: chosenLocation),
                           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                           CheckoutHeadlines(title: 'Products', numOfProducts: state.numOfProducts),

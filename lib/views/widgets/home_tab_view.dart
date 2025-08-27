@@ -30,7 +30,7 @@ class HomeTabView extends StatelessWidget {
                     height: size.height * 0.2,
                     autoPlay: true,
                     slideIndicator: CircularWaveSlideIndicator(
-                      slideIndicatorOptions: SlideIndicatorOptions(
+                      slideIndicatorOptions: const SlideIndicatorOptions(
                         currentIndicatorColor: Colors.deepPurple,
                         indicatorBackgroundColor: Colors.grey,
                         indicatorRadius: 4,
@@ -50,10 +50,10 @@ class HomeTabView extends StatelessWidget {
                         child: CachedNetworkImage(
                           imageUrl: state.carouselItems[itemIndex].imgUrl,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => Center(
+                          placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator.adaptive(),
                           ),
-                          errorWidget: (context, url, error) => Center(
+                          errorWidget: (context, url, error) => const Center(
                             child: Icon(Icons.error, color: Colors.red),
                           ),
                         ),
@@ -81,10 +81,10 @@ class HomeTabView extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 GridView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: orientation == Orientation.portrait ? 2 : 5,
                     mainAxisSpacing: 10,

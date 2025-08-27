@@ -11,7 +11,7 @@ class FavoritesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: IconButton(
-              icon: Icon(CupertinoIcons.heart),
+              icon: const Icon(CupertinoIcons.heart),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -19,7 +19,7 @@ class FavoritesPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(child: Text("Favorites Page"),)
+      body: const Center(child: Text("Favorites Page"),)
     );
   }
 }

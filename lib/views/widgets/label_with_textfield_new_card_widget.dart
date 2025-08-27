@@ -51,7 +51,7 @@ class _LabelWithTextfieldNewCardWidgetState extends State<LabelWithTextfieldNewC
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.0),
-                borderSide: BorderSide(color: AppColors.red),
+                borderSide: const BorderSide(color: AppColors.red),
               ),
             ),
           ),

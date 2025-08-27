@@ -28,7 +28,7 @@ class Counter extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               InkWell(
-                child: Icon(Icons.add, size: 20),
+                child: const Icon(Icons.add, size: 20),
                 onTap: () => cubit.incrementCounter(productId),
               ),
               Text(counterValue.toString()),

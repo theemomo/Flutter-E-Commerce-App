@@ -12,7 +12,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   void getProductDetailsPage(String id) {
     emit(ProductDetailsLoading());
 
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       final selectedProduct = dummyProducts.firstWhere((item) => item.id == id);
       emit(ProductDetailsLoaded(product: selectedProduct));
     });
@@ -47,7 +47,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       size: selectedSize!,
       quantity: quantity,
     );
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       dummyCart.add(cartItem);
       emit(ProductAddedToCart(id: productId));
     });

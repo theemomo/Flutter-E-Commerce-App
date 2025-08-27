@@ -90,16 +90,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   unselectedLabelColor: AppColors.grey,
                   labelColor: Theme.of(context).primaryColor,
                   controller: _tabController,
-                  tabs: [
-                    const Tab(text: "Home"),
-                    const Tab(text: "Category"),
+                  tabs: const [
+                    Tab(text: "Home"),
+                    Tab(text: "Category"),
                   ],
                 ),
                 const SizedBox(height: 24),
                 Expanded(
                   child: TabBarView(
                     controller: _tabController,
-                    children: [HomeTabView(), CategoryTabView()],
+                    children: const [HomeTabView(), CategoryTabView()],
                   ),
                 ),
               ],

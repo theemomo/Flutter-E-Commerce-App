@@ -11,7 +11,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _promoCodeController = TextEditingController();
+    final TextEditingController promoCodeController = TextEditingController();
     double discount = 0.0;
 
     return BlocProvider(
@@ -78,7 +78,7 @@ class CartPage extends StatelessWidget {
                                             validator: (value) => value == null || value.isEmpty
                                                 ? "Please Enter a Promo Code"
                                                 : null,
-                                            controller: _promoCodeController,
+                                            controller: promoCodeController,
                                             decoration: InputDecoration(
                                               prefixIcon: Icon(
                                                 Icons.discount,
