@@ -154,7 +154,6 @@ class _LoginPageState extends State<LoginPage> {
                             return Center(
                               child: TextButton(
                                 onPressed: () {
-                                  // TODO: test this
                                   Navigator.pushNamed(context, AppRoutes.homeRoute);
                                 },
                                 child: const Text(

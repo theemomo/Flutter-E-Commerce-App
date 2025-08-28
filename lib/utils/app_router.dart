@@ -5,6 +5,7 @@ import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
 import 'package:e_commerce/views/pages/login_page.dart';
 import 'package:e_commerce/views/pages/product_details_page.dart';
 import 'package:e_commerce/views/pages/register_page.dart';
+import 'package:e_commerce/views/pages/settings_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'app_routes.dart';
@@ -36,6 +37,9 @@ class AppRouter {
 
       case AppRoutes.addNewAddressRoute:
         return CupertinoPageRoute(settings: settings, builder: (_) => const ChooseLocationPage());
+
+      case AppRoutes.settingsRoute:
+        return CupertinoPageRoute(settings: settings, builder: (_) => const SettingsPage());
       default:
         return CupertinoPageRoute(
           settings: settings,

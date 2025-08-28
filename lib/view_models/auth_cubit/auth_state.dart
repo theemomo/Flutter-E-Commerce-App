@@ -13,3 +13,13 @@ final class AuthFailure extends AuthState {
 
   AuthFailure(this.error);
 }
+
+final class AuthLoggingOut extends AuthState {}
+
+final class AuthLoggedOut extends AuthState {}
+
+final class AuthErrorLoggingOut extends AuthState {
+  final String error;
+
+  AuthErrorLoggingOut(this.error);
+}
