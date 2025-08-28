@@ -12,6 +12,8 @@ dependencies:
   cached_network_image: ^3.4.1
   collection: ^1.19.1
   cupertino_icons: ^1.0.8
+  firebase_auth: ^6.0.1
+  firebase_core: ^4.0.0
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -45,9 +47,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
-
-
 
 flutter_native_splash:
   color: "#673AB7"
