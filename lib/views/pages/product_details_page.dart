@@ -32,9 +32,7 @@ class ProductDetailsPage extends StatelessWidget {
         builder: (context, state) {
           // ! when the page is loading
           if (state is ProductDetailsLoading) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator.adaptive()),
-            );
+            return const Scaffold(body: Center(child: CircularProgressIndicator.adaptive()));
             // ! when page have loaded
           } else if (state is ProductDetailsLoaded) {
             final productItem = state.product;
@@ -100,9 +98,7 @@ class ProductDetailsPage extends StatelessWidget {
                     child: Container(
                       height: size.height * 0.59,
                       width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.2),
-                      ),
+                      decoration: BoxDecoration(color: Colors.black.withOpacity(0.2)),
                     ),
                   ),
 
@@ -125,21 +121,16 @@ class ProductDetailsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     productItem.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(fontWeight: FontWeight.bold),
+                                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   // ! creating he BlocBuilder for the counter
-                                  BlocBuilder<
-                                    ProductDetailsCubit,
-                                    ProductDetailsState
-                                  >(
+                                  BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
                                     buildWhen: (previous, current) =>
                                         current is QuantityCounterLoaded ||
                                         current is ProductDetailsLoaded,
@@ -148,20 +139,13 @@ class ProductDetailsPage extends StatelessWidget {
                                         return Counter(
                                           counterValue: state.value,
                                           productId: productId,
-                                          cubit:
-                                              BlocProvider.of<
-                                                ProductDetailsCubit
-                                              >(context),
+                                          cubit: BlocProvider.of<ProductDetailsCubit>(context),
                                         );
-                                      } else if (state
-                                          is ProductDetailsLoaded) {
+                                      } else if (state is ProductDetailsLoaded) {
                                         return Counter(
                                           counterValue: 1,
                                           productId: productId,
-                                          cubit:
-                                              BlocProvider.of<
-                                                ProductDetailsCubit
-                                              >(context),
+                                          cubit: BlocProvider.of<ProductDetailsCubit>(context),
                                         );
                                       } else {
                                         return const SizedBox.shrink();
@@ -172,22 +156,12 @@ class ProductDetailsPage extends StatelessWidget {
                               ),
                               SizedBox(height: size.height * 0.009),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
-                                      Text(
-                                        "4.5 ",
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.labelLarge,
-                                      ),
-                                      const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                        size: 20,
-                                      ),
+                                      Text("4.5 ", style: Theme.of(context).textTheme.labelLarge),
+                                      const Icon(Icons.star, color: Colors.amber, size: 20),
                                     ],
                                   ),
                                   const Text("Available in stock"),
@@ -196,20 +170,15 @@ class ProductDetailsPage extends StatelessWidget {
                               SizedBox(height: size.height * 0.03),
                               Text(
                                 "Size",
-                                style: Theme.of(context).textTheme.titleMedium!
-                                    .copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                               ),
                               // ! creating the BlocBuilder for size selection
-                              BlocBuilder<
-                                ProductDetailsCubit,
-                                ProductDetailsState
-                              >(
-                                bloc: BlocProvider.of<ProductDetailsCubit>(
-                                  context,
-                                ),
+                              BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                                bloc: BlocProvider.of<ProductDetailsCubit>(context),
                                 buildWhen: (previous, current) =>
-                                    current is SizeSelected ||
-                                    current is ProductDetailsLoaded,
+                                    current is SizeSelected || current is ProductDetailsLoaded,
                                 builder: (context, state) {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -217,46 +186,29 @@ class ProductDetailsPage extends StatelessWidget {
                                         .map(
                                           (size) => InkWell(
                                             onTap: () {
-                                                BlocProvider.of<
-                                                      ProductDetailsCubit
-                                                    >(context)
-                                                    .selectSize(size);
+                                              BlocProvider.of<ProductDetailsCubit>(
+                                                context,
+                                              ).selectSize(size);
                                             },
                                             child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                4.0,
-                                              ),
+                                              padding: const EdgeInsets.all(4.0),
                                               child: CircleAvatar(
                                                 radius: 20,
                                                 backgroundColor:
-                                                    state is SizeSelected &&
-                                                        state.size == size
+                                                    state is SizeSelected && state.size == size
                                                     ? AppColors.primary
                                                     : AppColors.grey2,
 
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                    12,
-                                                  ),
+                                                  padding: const EdgeInsets.all(12),
                                                   child: Text(
                                                     size.name,
                                                     style:
-                                                        state is SizeSelected &&
-                                                            state.size == size
-                                                        ? Theme.of(context)
-                                                              .textTheme
-                                                              .labelMedium!
-                                                              .copyWith(
-                                                                color: Colors
-                                                                    .white,
-                                                              )
-                                                        : Theme.of(context)
-                                                              .textTheme
-                                                              .labelMedium!
-                                                              .copyWith(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
+                                                        state is SizeSelected && state.size == size
+                                                        ? Theme.of(context).textTheme.labelMedium!
+                                                              .copyWith(color: Colors.white)
+                                                        : Theme.of(context).textTheme.labelMedium!
+                                                              .copyWith(color: Colors.black),
                                                   ),
                                                 ),
                                               ),
@@ -271,47 +223,35 @@ class ProductDetailsPage extends StatelessWidget {
                               SizedBox(height: size.height * 0.02),
                               Text(
                                 productItem.description,
-                                style: Theme.of(context).textTheme.labelMedium!
-                                    .copyWith(color: Colors.black54),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.labelMedium!.copyWith(color: Colors.black54),
                               ),
                               SizedBox(height: size.height * 0.03),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text.rich(
                                     TextSpan(
                                       children: [
                                         TextSpan(
                                           text: "\$",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall!
-                                              .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(
-                                                  context,
-                                                ).primaryColor,
-                                              ),
+                                          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context).primaryColor,
+                                          ),
                                         ),
                                         TextSpan(
-                                          text:
-                                              ' ${productItem.price.toString()}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall!
-                                              .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                          text: ' ${productItem.price.toString()}',
+                                          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
                                   // ! Add to cart button
-                                  BlocBuilder<
-                                    ProductDetailsCubit,
-                                    ProductDetailsState
-                                  >(
+                                  BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
                                     // bloc: BlocProvider.of<ProductDetailsCubit>(context),
                                     buildWhen: (previous, current) =>
                                         current is ProductAddedToCart ||
@@ -323,34 +263,27 @@ class ProductDetailsPage extends StatelessWidget {
                                             null;
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Theme.of(
-                                              context,
-                                            ).primaryColor,
+                                            backgroundColor: Theme.of(context).primaryColor,
                                             foregroundColor: AppColors.white,
                                             minimumSize: const Size(180, 60),
                                           ),
                                           icon: const Center(
-                                            child:
-                                                CircularProgressIndicator.adaptive(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                        Color
-                                                      >(AppColors.white),
-                                                  strokeWidth: 3,
-                                                  constraints: BoxConstraints(
-                                                    minWidth: 24,
-                                                    minHeight: 24,
-                                                  ),
-                                                ),
+                                            child: CircularProgressIndicator.adaptive(
+                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                AppColors.white,
+                                              ),
+                                              strokeWidth: 3,
+                                              constraints: BoxConstraints(
+                                                minWidth: 24,
+                                                minHeight: 24,
+                                              ),
+                                            ),
                                           ),
                                           label: Text(
                                             "Add to cart",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  color: AppColors.white,
-                                                ),
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodyLarge!.copyWith(color: AppColors.white),
                                           ),
                                         );
                                       } else if (state is ProductAddedToCart) {
@@ -365,66 +298,50 @@ class ProductDetailsPage extends StatelessWidget {
                                           ),
                                           icon: Icon(
                                             Icons.done,
-                                            size:
-                                                orientation ==
-                                                    Orientation.portrait
+                                            size: orientation == Orientation.portrait
                                                 ? size.height * 0.03
                                                 : size.height * 0.06,
                                           ),
                                           label: Text(
                                             "Added to cart",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  color: AppColors.white,
-                                                ),
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodyLarge!.copyWith(color: AppColors.white),
                                           ),
                                         );
                                       } else {
                                         return ElevatedButton.icon(
                                           onPressed: () {
-                                            final cubit = BlocProvider.of<ProductDetailsCubit>(context);
+                                            final cubit = BlocProvider.of<ProductDetailsCubit>(
+                                              context,
+                                            );
                                             if (cubit.selectedSize != null) {
                                               cubit.addToCart(productId);
                                             } else {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 const SnackBar(
-                                                  content: Text(
-                                                    "Please select a size",
-                                                  ),
-                                                  duration: Duration(
-                                                    seconds: 2,
-                                                  ),
+                                                  content: Text("Please select a size"),
+                                                  duration: Duration(seconds: 2),
                                                 ),
                                               );
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Theme.of(
-                                              context,
-                                            ).primaryColor,
+                                            backgroundColor: Theme.of(context).primaryColor,
                                             foregroundColor: AppColors.white,
                                             minimumSize: const Size(180, 60),
                                           ),
                                           icon: Icon(
                                             Icons.shopping_bag_outlined,
-                                            size:
-                                                orientation ==
-                                                    Orientation.portrait
+                                            size: orientation == Orientation.portrait
                                                 ? size.height * 0.03
                                                 : size.height * 0.06,
                                           ),
                                           label: Text(
                                             "Add to cart",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  color: AppColors.white,
-                                                ),
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodyLarge!.copyWith(color: AppColors.white),
                                           ),
                                         );
                                       }

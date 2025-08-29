@@ -23,3 +23,13 @@ final class AuthErrorLoggingOut extends AuthState {
 
   AuthErrorLoggingOut(this.error);
 }
+
+final class FacebookAuthLoading extends AuthState {}
+
+final class FacebookAuthSuccess extends AuthState {}
+
+final class FacebookAuthFailure extends AuthState {
+  final String error;
+
+  FacebookAuthFailure(this.error);
+}

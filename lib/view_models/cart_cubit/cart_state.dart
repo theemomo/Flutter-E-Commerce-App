@@ -11,8 +11,9 @@ final class CartLoading extends CartState {}
 final class CartLoaded extends CartState {
   final List<AddToCartModel> cartItems;
   final double subtotal;
+  final double discount;
 
-  const CartLoaded({required this.cartItems, required this.subtotal});
+  const CartLoaded({required this.cartItems, required this.subtotal, required this.discount});
 }
 
 final class CartError extends CartState {
@@ -21,22 +22,12 @@ final class CartError extends CartState {
   const CartError(this.message);
 }
 
-final class CartQuantityUpdated extends CartState {
-  final String productId;
 
-  const CartQuantityUpdated({required this.productId});
+
+
+final class PromoCodeApplied extends CartState {
+  final String code;
+  final double discount;
+
+  const PromoCodeApplied({required this.code, required this.discount});
 }
-
-// final class CartDiscountApplied extends CartState {
-//   final List<AddToCartModel> cartItems;
-//   final double subtotal;
-//   final double discount;
-//   final double total;
-
-//   const CartDiscountApplied({
-//     required this.cartItems,
-//     required this.subtotal,
-//     required this.discount,
-//     required this.total,
-//   });
-// }

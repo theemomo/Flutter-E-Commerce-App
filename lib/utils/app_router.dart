@@ -1,3 +1,4 @@
+import 'package:e_commerce/views/pages/cart_page.dart';
 import 'package:e_commerce/views/pages/choose_location_page.dart';
 import 'package:e_commerce/views/pages/add_new_card_page.dart';
 import 'package:e_commerce/views/pages/checkout_page.dart';
@@ -40,6 +41,7 @@ class AppRouter {
 
       case AppRoutes.settingsRoute:
         return CupertinoPageRoute(settings: settings, builder: (_) => const SettingsPage());
+
       default:
         return CupertinoPageRoute(
           settings: settings,

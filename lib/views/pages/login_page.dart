@@ -241,31 +241,63 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          null;
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.white,
-                          foregroundColor: AppColors.black,
-                          shadowColor: Colors.transparent,
-                          side: const BorderSide(color: AppColors.grey, width: 0.1),
-                        ),
-                        icon: CachedNetworkImage(
-                          imageUrl: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
-                          width: 25,
-                        ),
-                        label: Text(
-                          "Login with Facebook",
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500,
+                    BlocConsumer<AuthCubit, AuthState>(
+                      listenWhen: (previous, current) =>
+                          current is FacebookAuthSuccess || current is FacebookAuthFailure,
+                      listener: (context, state) {
+                        if (state is FacebookAuthSuccess) {
+                          Navigator.pushNamed(context, AppRoutes.homeRoute);
+                        } else if (state is FacebookAuthFailure) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(state.error)));
+                        }
+                      },
+                      buildWhen: (previous, current) =>
+                          current is FacebookAuthLoading || current is FacebookAuthSuccess,
+                      builder: (context, state) {
+                        if (state is FacebookAuthLoading) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (state is FacebookAuthSuccess) {
+                          return Center(
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, AppRoutes.homeRoute);
+                              },
+                              child: const Text(
+                                "Login Successful, proceed to home",
+                                style: TextStyle(color: AppColors.primary),
+                              ),
+                            ),
+                          );
+                        }
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              context.read<AuthCubit>().authWithFacebook();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.white,
+                              foregroundColor: AppColors.black,
+                              shadowColor: Colors.transparent,
+                              side: const BorderSide(color: AppColors.grey, width: 0.1),
+                            ),
+                            icon: CachedNetworkImage(
+                              imageUrl: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
+                              width: 25,
+                            ),
+                            label: Text(
+                              "Login with Facebook",
+                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),

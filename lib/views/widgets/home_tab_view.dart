@@ -13,9 +13,10 @@ class HomeTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
     final size = MediaQuery.of(context).size;
+    final bloc = BlocProvider.of<HomeCubit>(context);
 
     return BlocBuilder<HomeCubit, HomeState>(
-      bloc: BlocProvider.of<HomeCubit>(context),
+      bloc: bloc,
       builder: (context, state) {
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator.adaptive());
@@ -40,22 +41,16 @@ class HomeTabView extends StatelessWidget {
                     showIndicator: true,
                     floatingIndicator: false,
                   ),
-                  itemBuilder:
-                      (
-                        BuildContext context,
-                        int itemIndex,
-                        int pageViewIndex,
-                      ) => ClipRRect(
+                  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                      ClipRRect(
                         borderRadius: BorderRadiusGeometry.circular(11),
                         child: CachedNetworkImage(
                           imageUrl: state.carouselItems[itemIndex].imgUrl,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          ),
-                          errorWidget: (context, url, error) => const Center(
-                            child: Icon(Icons.error, color: Colors.red),
-                          ),
+                          placeholder: (context, url) =>
+                              const Center(child: CircularProgressIndicator.adaptive()),
+                          errorWidget: (context, url, error) =>
+                              const Center(child: Icon(Icons.error, color: Colors.red)),
                         ),
                       ),
                 ),
@@ -64,9 +59,9 @@ class HomeTabView extends StatelessWidget {
                   children: [
                     Text(
                       "New Arrivals 🔥",
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w600),
                     ),
                     TextButton(
                       onPressed: () {},
@@ -89,21 +84,20 @@ class HomeTabView extends StatelessWidget {
                     crossAxisCount: orientation == Orientation.portrait ? 2 : 5,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 20,
-                    childAspectRatio: orientation == Orientation.portrait
-                        ? 0.6
-                        : 0.5,
+                    childAspectRatio: orientation == Orientation.portrait ? 0.6 : 0.5,
                   ),
                   itemCount: state.arrivalProducts.length,
-                  itemBuilder: (context, index) => 
-                  InkWell(
-                    child: ProductGridItem(
-                      productItem: state.arrivalProducts[index],
-                    ),
+                  itemBuilder: (context, index) => InkWell(
+                    child: ProductGridItem(productItem: state.arrivalProducts[index]),
                     onTap: () {
-                      Navigator.of(context, rootNavigator: true).pushNamed(
-                        AppRoutes.productDetailsRoute,
-                        arguments: state.arrivalProducts[index].id,
-                      );
+                      Navigator.of(context, rootNavigator: true)
+                          .pushNamed(
+                            AppRoutes.productDetailsRoute,
+                            arguments: state.arrivalProducts[index].id,
+                          )
+                          .then((value) {
+                            // BlocProvider.of<CartCubit>(this.context).getCartItems();
+                          });
                     },
                   ),
                 ),
@@ -111,12 +105,7 @@ class HomeTabView extends StatelessWidget {
             ),
           );
         } else if (state is HomeError) {
-          return Center(
-            child: Text(
-              state.message,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-          );
+          return Center(child: Text(state.message, style: Theme.of(context).textTheme.labelLarge));
         } else {
           return const SizedBox.shrink();
         }

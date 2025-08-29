@@ -12,6 +12,7 @@ class CustomBottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
+      
       tabs: [
         PersistentTabConfig(
           screen: const HomePage(),
@@ -19,7 +20,7 @@ class CustomBottomNavbar extends StatelessWidget {
             icon: const Icon(CupertinoIcons.house_fill),
             inactiveIcon: const Icon(CupertinoIcons.home),
             title: "Home",
-            activeForegroundColor: Theme.of(context).primaryColor
+            activeForegroundColor: Theme.of(context).primaryColor,
           ),
         ),
         PersistentTabConfig(
@@ -28,7 +29,7 @@ class CustomBottomNavbar extends StatelessWidget {
             icon: const Icon(CupertinoIcons.cube_box_fill),
             inactiveIcon: const Icon(CupertinoIcons.cube_box),
             title: "Orders",
-            activeForegroundColor: Theme.of(context).primaryColor
+            activeForegroundColor: Theme.of(context).primaryColor,
           ),
         ),
         PersistentTabConfig(
@@ -37,7 +38,7 @@ class CustomBottomNavbar extends StatelessWidget {
             icon: const Icon(CupertinoIcons.heart_fill),
             inactiveIcon: const Icon(CupertinoIcons.heart),
             title: "Favorite",
-            activeForegroundColor: Theme.of(context).primaryColor
+            activeForegroundColor: Theme.of(context).primaryColor,
           ),
         ),
         PersistentTabConfig(
@@ -50,8 +51,7 @@ class CustomBottomNavbar extends StatelessWidget {
           ),
         ),
       ],
-      navBarBuilder: (navBarConfig) =>
-          Style1BottomNavBar(navBarConfig: navBarConfig),
+      navBarBuilder: (navBarConfig) => Style1BottomNavBar(navBarConfig: navBarConfig),
     );
   }
 }
