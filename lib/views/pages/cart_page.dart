@@ -140,7 +140,7 @@ class CartPage extends StatelessWidget {
                                             // Navigator.pushNamed(context, AppRoutes.checkoutRoute);
                                             pushScreen(
                                               context,
-                                              screen: const CheckoutPage(),
+                                              screen: CheckoutPage(totalAmount: state.subtotal - (state.subtotal * state.discount) + 20),
                                               withNavBar: false,
                                               pageTransitionAnimation:
                                                   PageTransitionAnimation.cupertino,

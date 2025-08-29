@@ -10,7 +10,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   void getCheckoutItems() {
     emit(CheckoutLoading());
-    final subtotal = dummyCart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
+    // final subtotal = dummyCart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
     final numOfProducts = dummyCart.fold(0, (sum, item) => sum + item.quantity);
 
     // final PaymentCardModel? chosenPaymentCard = dummyPaymentCards.isNotEmpty
@@ -30,7 +30,6 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     emit(
       CheckoutLoaded(
         cartItems: dummyCart,
-        totalAmount: subtotal + 20,
         numOfProducts: numOfProducts,
         chosenPaymentCard: chosenPaymentCard,
         shippingAddress: chosenLocation,

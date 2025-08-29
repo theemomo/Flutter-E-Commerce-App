@@ -30,8 +30,8 @@ class AppRouter {
           builder: (_) => ProductDetailsPage(productId: productId),
         );
 
-      case AppRoutes.checkoutRoute:
-        return CupertinoPageRoute(builder: (_) => const CheckoutPage());
+      // case AppRoutes.checkoutRoute:
+      //   return CupertinoPageRoute(builder: (_) => const CheckoutPage());
 
       case AppRoutes.addNewCardRoute:
         return CupertinoPageRoute(settings: settings, builder: (_) => const AddNewCardPage());

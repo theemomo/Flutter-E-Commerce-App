@@ -13,7 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutPage extends StatelessWidget {
-  const CheckoutPage({super.key});
+  final double totalAmount;
+  CheckoutPage({super.key, required this.totalAmount});
 
   Widget _buildPaymentMethodItem(context, {required PaymentCardModel? chosenCard}) {
     final CheckoutCubit checkoutCubit = BlocProvider.of<CheckoutCubit>(context);
@@ -247,7 +248,7 @@ class CheckoutPage extends StatelessWidget {
                                 ).textTheme.titleMedium!.copyWith(color: Colors.grey),
                               ),
                               Text(
-                                "\$${state.totalAmount}",
+                                "\$${totalAmount.toStringAsFixed(2)}",
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                             ],
