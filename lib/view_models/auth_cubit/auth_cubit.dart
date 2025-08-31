@@ -1,4 +1,7 @@
+import 'package:e_commerce/models/user_data.dart';
 import 'package:e_commerce/services/auth_services.dart';
+import 'package:e_commerce/services/firestore_services.dart';
+import 'package:e_commerce/utils/api_paths.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_state.dart';
@@ -7,6 +10,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
   final AuthServices authServices = AuthServicesImpl();
+  final firestore = FirestoreServices.instance;
 
   Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
@@ -22,11 +26,34 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> register({required String email, required String password}) async {
+  Future<void> _saveUserData({required String email, required String username}) async {
+    final currentUser = authServices.getCurrentUser();
+
+        final UserData userData = UserData(
+          id: currentUser!.uid,
+          email: email,
+          username: username,
+          createdAt: DateTime.now().toString(),
+        );
+
+        await firestore.setData(
+          path: ApiPaths.users(userId: currentUser.uid),
+          data: userData.toMap(),
+        );
+  }
+
+
+  Future<void> register({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
     emit(AuthLoading());
     try {
       final result = await authServices.registerWithEmailAndPassword(email, password);
       if (result) {
+        await _saveUserData(email: email, username: username); 
+
         emit(AuthSuccess());
       } else {
         emit(AuthFailure("Registration failed"));
@@ -70,18 +97,3 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 }
-
-
-// Future<void> authenticateWithFacebook() async {
-//     emit(const FacebookAuthenticating());
-//     try {
-//       final result = await authServices.authenticateWithFacebook();
-//       if (result) {
-//         emit(const FacebookAuthDone());
-//       } else {
-//         emit(const FacebookAuthError('Facebook authentication failed'));
-//       }
-//     } catch (e) {
-//       emit(FacebookAuthError(e.toString()));
-//     }
-//   }

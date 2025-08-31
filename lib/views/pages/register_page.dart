@@ -193,6 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 BlocProvider.of<AuthCubit>(context).register(
                                   email: emailController.text,
                                   password: passwordController.text,
+                                  username: usernameController.text,
                                 );
                               }
                               // debugPrint('${formKey.currentState}');

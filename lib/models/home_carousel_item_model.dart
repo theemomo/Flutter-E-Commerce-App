@@ -1,27 +1,34 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 class HomeCarouselItemModel {
   final String id;
   final String imgUrl;
 
-  HomeCarouselItemModel({
-    required this.id,
-    required this.imgUrl,
-  });
+  HomeCarouselItemModel({required this.id, required this.imgUrl});
 
-//   Map<String, dynamic> toMap() {
-//     final result = <String, dynamic>{};
-  
-//     result.addAll({'id': id});
-//     result.addAll({'imgUrl': imgUrl});
-  
-//     return result;
-//   }
+  //   Map<String, dynamic> toMap() {
+  //     final result = <String, dynamic>{};
 
-//   factory HomeCarouselItemModel.fromMap(Map<String, dynamic> map) {
-//     return HomeCarouselItemModel(
-//       id: map['id'] ?? '',
-//       imgUrl: map['imgUrl'] ?? '',
-//     );
-//   }
+  //     result.addAll({'id': id});
+  //     result.addAll({'imgUrl': imgUrl});
+
+  //     return result;
+  //   }
+
+  //   factory HomeCarouselItemModel.fromMap(Map<String, dynamic> map) {
+  //     return HomeCarouselItemModel(
+  //       id: map['id'] ?? '',
+  //       imgUrl: map['imgUrl'] ?? '',
+  //     );
+  //   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{'id': id, 'imgUrl': imgUrl};
+  }
+
+  factory HomeCarouselItemModel.fromMap(Map<String, dynamic> map) {
+    return HomeCarouselItemModel(id: map['id'] as String, imgUrl: map['imgUrl'] as String);
+  }
 }
 
 List<HomeCarouselItemModel> dummyHomeCarouselItems = [
@@ -39,10 +46,5 @@ List<HomeCarouselItemModel> dummyHomeCarouselItems = [
     id: 'XjZBor795dLTO2ErQGi3',
     imgUrl:
         'https://dfcdn.defacto.com.tr/Mobile/ar_eg_slider_6b8516b5-4e0d-4681-a3a9-74f0ee622d96_7400bcc7-5cd3-4ea7-8ccb-5f0ff3f5cb93_DI_542.jpg',
-  ),
-  HomeCarouselItemModel(
-    id: '8u3jP9mBZYVSGq7JGoc6',
-    imgUrl:
-        'https://marketplace.canva.com/EAFMdLQAxDU/1/0/1600w/canva-white-and-gray-modern-real-estate-modern-home-banner-NpQukS8X1oo.jpg',
   ),
 ];

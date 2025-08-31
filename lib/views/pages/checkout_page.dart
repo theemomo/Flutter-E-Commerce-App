@@ -14,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutPage extends StatelessWidget {
   final double totalAmount;
-  CheckoutPage({super.key, required this.totalAmount});
+  const CheckoutPage({super.key, required this.totalAmount});
 
   Widget _buildPaymentMethodItem(context, {required PaymentCardModel? chosenCard}) {
     final CheckoutCubit checkoutCubit = BlocProvider.of<CheckoutCubit>(context);

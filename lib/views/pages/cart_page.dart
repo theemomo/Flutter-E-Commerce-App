@@ -12,7 +12,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _promoCodeController = TextEditingController();
+    final TextEditingController promoCodeController = TextEditingController();
 
     return BlocProvider(
       create: (context) {
@@ -75,7 +75,7 @@ class CartPage extends StatelessWidget {
                                             validator: (value) => value == null || value.isEmpty
                                                 ? "Please Enter a Promo Code"
                                                 : null,
-                                            controller: _promoCodeController,
+                                            controller: promoCodeController,
                                             decoration: InputDecoration(
                                               suffixIcon: IconButton(
                                                 icon: Icon(
@@ -84,7 +84,7 @@ class CartPage extends StatelessWidget {
                                                 ),
                                                 onPressed: () {
                                                   // Handle promo code submission
-                                                  parentContext.read<CartCubit>().getCartItems(_promoCodeController.text);
+                                                  parentContext.read<CartCubit>().getCartItems(promoCodeController.text);
                                                   Navigator.pop(parentContext);
                                                 },
                                               ),

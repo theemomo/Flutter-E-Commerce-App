@@ -20,20 +20,24 @@ class SettingsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               BlocConsumer<AuthCubit, AuthState>(
-                listenWhen: (previous, current) => current is AuthErrorLoggingOut || current is AuthLoggedOut,
+                listenWhen: (previous, current) =>
+                    current is AuthErrorLoggingOut || current is AuthLoggedOut,
                 listener: (context, state) {
                   if (state is AuthLoggedOut) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
+                    Navigator.of(
+                      context,
+                    ).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
                   } else if (state is AuthErrorLoggingOut) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Error logging out: ${state.error}")),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text("Error logging out: ${state.error}")));
                   }
                 },
                 buildWhen: (previous, current) => current is AuthLoggingOut,
                 builder: (context, state) {
-                  if(state is AuthLoggingOut)
-                    {return const Center(child: CircularProgressIndicator(color: AppColors.red),);}
+                  if (state is AuthLoggingOut) {
+                    return const Center(child: CircularProgressIndicator(color: AppColors.red));
+                  }
                   return TextButton(
                     onPressed: () async {
                       await BlocProvider.of<AuthCubit>(context).logout();
@@ -41,6 +45,12 @@ class SettingsPage extends StatelessWidget {
                     child: const Text("Log Out", style: TextStyle(color: AppColors.red)),
                   );
                 },
+              ),
+              TextButton(
+                onPressed: () async {
+                  // await BlocProvider.of<AuthCubit>(context).logout();
+                },
+                child: const Text("Remove My Account", style: TextStyle(color: AppColors.red)),
               ),
             ],
           ),

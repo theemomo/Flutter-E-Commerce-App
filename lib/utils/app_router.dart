@@ -1,7 +1,5 @@
-import 'package:e_commerce/views/pages/cart_page.dart';
 import 'package:e_commerce/views/pages/choose_location_page.dart';
 import 'package:e_commerce/views/pages/add_new_card_page.dart';
-import 'package:e_commerce/views/pages/checkout_page.dart';
 import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
 import 'package:e_commerce/views/pages/login_page.dart';
 import 'package:e_commerce/views/pages/product_details_page.dart';

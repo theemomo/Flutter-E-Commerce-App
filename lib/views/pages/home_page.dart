@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/home_cubit/home_cubit.dart';
+import 'package:e_commerce/view_models/user_data_cubit/user_data_cubit.dart';
 import 'package:e_commerce/views/widgets/category_tab_view.dart';
 import 'package:e_commerce/views/widgets/home_tab_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,53 +38,57 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(25.0),
             child: Column(
               children: [
-                BlocBuilder<HomeCubit, HomeState>(
-                  builder: (context, state) {
-                    if (state is HomeLoading) {
-                      return const SizedBox.shrink();
-                    } else if (state is HomeLoaded) {
-                      return Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 25,
-                            backgroundImage: CachedNetworkImageProvider(
-                              "https://cdn-icons-png.flaticon.com/512/9408/9408175.png",
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Hi, Mohammad Moustafa",
-                                  style: Theme.of(context).textTheme.bodyLarge!
-                                      .copyWith(fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  "Let's go shopping",
-                                  style: Theme.of(context).textTheme.bodyMedium!
-                                      .copyWith(color: Colors.grey[500]),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Icon(CupertinoIcons.search),
-                          const SizedBox(width: 15),
-                          const Icon(CupertinoIcons.bell),
-                        ],
-                      );
-                    } else if (state is HomeError) {
-                      return Center(
-                        child: Text(
-                          state.message,
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                      );
-                    }else{
-                       return const SizedBox.shrink();
-                    }
+                BlocProvider(
+                  create: (context) {
+                    final cubit = UserDataCubit();
+                    cubit.getUserData();
+                    return cubit;
                   },
+                  child: BlocBuilder<UserDataCubit, UserDataState>(
+                    builder: (context, state) {
+                      if (state is GetUserDataLoading) {
+                        return const Center(child: CircularProgressIndicator.adaptive());
+                      } else if (state is GetUserDataLoadingError) {
+                        return Text(state.message);
+                      } else if (state is GetUserDataLoaded) {
+                        return Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 25,
+                              backgroundImage: CachedNetworkImageProvider(
+                                "https://cdn-icons-png.flaticon.com/512/9408/9408175.png",
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Hi, ${state.username}",
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    "Let's go shopping",
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium!.copyWith(color: Colors.grey[500]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(CupertinoIcons.search),
+                            const SizedBox(width: 15),
+                            const Icon(CupertinoIcons.bell),
+                          ],
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  ),
                 ),
                 const SizedBox(height: 24),
                 TabBar(

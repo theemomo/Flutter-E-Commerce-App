@@ -14,7 +14,7 @@ final class ProductDetailsLoaded extends ProductDetailsState {
 
 final class ProductDetailsError extends ProductDetailsState {
   final String message;
-  ProductDetailsError({required this.message});
+  ProductDetailsError(this.message);
 }
 
 // ! counter section
@@ -39,4 +39,8 @@ final class ProductAddedToCart extends ProductDetailsState {
   final String id;
   ProductAddedToCart({required this.id});
 }
-  
+
+final class ProductAddingToCartError extends ProductDetailsState {
+  final String message;
+  ProductAddingToCartError(this.message);
+}

@@ -17,10 +17,14 @@ class HomeTabView extends StatelessWidget {
 
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: bloc,
+      buildWhen: (previous, current) =>
+          current is HomeLoading || current is HomeLoaded || current is HomeError,
       builder: (context, state) {
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator.adaptive());
         } else if (state is HomeLoaded) {
+          debugPrint(state.products[0].price.toString());
+          debugPrint(state.products[0].isFav.toString()); // always false !!
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -86,18 +90,14 @@ class HomeTabView extends StatelessWidget {
                     crossAxisSpacing: 20,
                     childAspectRatio: orientation == Orientation.portrait ? 0.6 : 0.5,
                   ),
-                  itemCount: state.arrivalProducts.length,
+                  itemCount: state.products.length,
                   itemBuilder: (context, index) => InkWell(
-                    child: ProductGridItem(productItem: state.arrivalProducts[index]),
+                    child: ProductGridItem(productItem: state.products[index]),
                     onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .pushNamed(
-                            AppRoutes.productDetailsRoute,
-                            arguments: state.arrivalProducts[index].id,
-                          )
-                          .then((value) {
-                            // BlocProvider.of<CartCubit>(this.context).getCartItems();
-                          });
+                      Navigator.of(context, rootNavigator: true).pushNamed(
+                        AppRoutes.productDetailsRoute,
+                        arguments: state.products[index].id,
+                      );
                     },
                   ),
                 ),
