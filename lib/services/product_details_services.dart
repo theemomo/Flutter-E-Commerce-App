@@ -22,7 +22,7 @@ class ProductDetailsServicesImpl implements ProductDetailsServices {
   @override
   Future<void> addToCart(AddToCartModel cartItem, String userId) async {
     await _firestoreServices.setData(
-      path: ApiPaths.cartItem(userId, DateTime.now().toIso8601String()),
+      path: ApiPaths.cartItem(userId, cartItem.id),
       data: cartItem.toMap(),
     );
   }

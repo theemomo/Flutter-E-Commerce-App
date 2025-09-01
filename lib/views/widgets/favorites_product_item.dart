@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/models/product_item_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
+import 'package:e_commerce/view_models/favorite_cubit/favorite_cubit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoritesProductItem extends StatelessWidget {
   final ProductItemModel product;
@@ -35,9 +38,8 @@ class FavoritesProductItem extends StatelessWidget {
                           context,
                         ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
 
-                      const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -51,12 +53,51 @@ class FavoritesProductItem extends StatelessWidget {
                                   color: AppColors.primary,
                                 ),
                               ),
+                              Text(
+                                (product.price).toStringAsFixed(1),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ],
                   ),
+                ),
+                BlocConsumer<FavoriteCubit, FavoriteState>(
+                  listenWhen: (previous, current) =>
+                      (current is FavoriteRemovingError && product.id == current.productId),
+                  listener: (context, state) {
+                    if (state is FavoriteRemovingError) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(state.message.toString())));
+                    }
+                  },
+                  buildWhen: (previous, current) =>
+                      (current is FavoriteRemoving && product.id == current.productId) ||
+                      (current is FavoriteRemoved && product.id == current.productId),
+                  builder: (context, state) {
+                    if (state is FavoriteRemoving) {
+                      return const Center(child:  CircularProgressIndicator.adaptive());
+                    } else if (state is FavoriteRemoved) {
+                      return IconButton(
+                        icon: const Icon(Icons.delete, color: AppColors.primary),
+                        onPressed: () async {
+                          await BlocProvider.of<FavoriteCubit>(context).removeFavorite(product.id);
+                        },
+                      );
+                    }
+                    return IconButton(
+                      icon: const Icon(Icons.delete, color: AppColors.primary),
+                      onPressed: () async {
+                        await BlocProvider.of<FavoriteCubit>(context).removeFavorite(product.id);
+                        // debugPrint("Delete: ${product.name}");
+                      },
+                    );
+                  },
                 ),
               ],
             ),

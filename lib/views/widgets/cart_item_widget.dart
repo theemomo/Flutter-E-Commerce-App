@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/models/add_to_cart_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/cart_cubit/cart_cubit.dart';
-import 'package:e_commerce/views/widgets/counter.dart';
+import 'package:e_commerce/views/widgets/counter_in_cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,15 +83,15 @@ class CartItemWidget extends StatelessWidget {
                                 current is CartLoaded,
                             builder: (context, state) {
                               if (state is CartLoaded) {
-                                return Counter(
+                                return CounterInCartPage(
                                   counterValue: counterValue,
-                                  productId: cartItem.product.id,
+                                  cartItem: cartItem,
                                   cubit: cubit,
                                 );
                               } else {
-                                return Counter(
+                                return CounterInCartPage(
                                   counterValue: counterValue,
-                                  productId: cartItem.product.id,
+                                  cartItem: cartItem,
                                   cubit: cubit,
                                 );
                               }

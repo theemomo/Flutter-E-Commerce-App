@@ -1,59 +1,56 @@
 import 'package:e_commerce/models/add_to_cart_model.dart';
 import 'package:e_commerce/models/promo_code_model.dart';
+import 'package:e_commerce/services/cart_services.dart';
+import 'package:e_commerce/services/discount_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
-
-  double get _subtotal =>
-      dummyCart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
+  final _cartServices = CartServicesImpl();
+  final _discountServices = DiscountServicesImpl();
 
   double promoCodeDiscount = 0.0;
+  late List<AddToCartModel> cart;
 
-  void getCartItems(String? promoCode) {
+  void getCartItems(String? promoCode) async {
     emit(CartLoading());
-    if (promoCode != null) {
-      final PromoCodeModel promo = promoCodes.firstWhere(
-        (promo) => promo.code == promoCode,
-        orElse: () => PromoCodeModel(code: '', discount: 0.0),
-      );
-      promoCodeDiscount = promo.discount;
-      Future.delayed(const Duration(milliseconds: 500), () {
-        emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal, discount: promo.discount));
-      });
-    } else {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal, discount: 0.0));
-      });
+    try {
+      final List<AddToCartModel> cartItems = await _cartServices.fetchCartItems();
+      cart = cartItems;
+      final subtotal = cartItems.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
+      final promoCodes = await _discountServices.fetchPromoCodes();
+      
+
+      if (promoCode != null) {
+        final PromoCodeModel promo = promoCodes.firstWhere(
+          (promo) => promo.code == promoCode,
+          orElse: () => PromoCodeModel(code: '', discount: 0.0),
+        );
+        promoCodeDiscount = promo.discount;
+        emit(CartLoaded(cartItems: cartItems, subtotal: subtotal, discount: promo.discount));
+      } else {
+        emit(CartLoaded(cartItems: cartItems, subtotal: subtotal, discount: 0.0));
+      }
+    } catch (e) {
+      emit(CartError(e.toString()));
     }
   }
 
-  void incrementCounter(String productId) {
-    final selectedItem = dummyCart.firstWhere((item) => item.product.id == productId);
-    final updatedItem = selectedItem.copyWith(quantity: selectedItem.quantity + 1);
+  Future<void> incrementCounter(AddToCartModel cartItem) async {
+    final updatedCartItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
+    await _cartServices.setCartItem(updatedCartItem);
+    final subtotal = cart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
 
-    // replace the old item with updated item
-    final index = dummyCart.indexOf(selectedItem);
-    dummyCart[index] = updatedItem;
-
-    emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal, discount: promoCodeDiscount));
+    emit(CartLoaded(cartItems: cart, subtotal: subtotal, discount: promoCodeDiscount));
   }
 
-  void decrementCounter(String productId) {
-    final selectedItem = dummyCart.firstWhere((item) => item.product.id == productId);
+  Future<void> decrementCounter(AddToCartModel cartItem) async {
+    final updatedCartItem = cartItem.copyWith(quantity: cartItem.quantity - 1);
+    await _cartServices.setCartItem(updatedCartItem);
+    final subtotal = cart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
 
-    if (selectedItem.quantity > 1) {
-      final updatedItem = selectedItem.copyWith(quantity: selectedItem.quantity - 1);
-      final index = dummyCart.indexOf(selectedItem);
-      dummyCart[index] = updatedItem;
-    } else {
-      dummyCart.remove(selectedItem);
-    }
-
-    emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal, discount: promoCodeDiscount));
+    emit(CartLoaded(cartItems: cart, subtotal: subtotal, discount: promoCodeDiscount));
   }
-
-  
 }

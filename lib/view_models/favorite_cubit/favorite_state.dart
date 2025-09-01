@@ -28,5 +28,6 @@ class FavoriteRemoved extends FavoriteState {
 
 class FavoriteRemovingError extends FavoriteState {
   final String message;
-  FavoriteRemovingError(this.message);
+  final String productId;
+  FavoriteRemovingError(this.message, this.productId);
 }

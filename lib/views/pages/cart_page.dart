@@ -84,7 +84,9 @@ class CartPage extends StatelessWidget {
                                                 ),
                                                 onPressed: () {
                                                   // Handle promo code submission
-                                                  parentContext.read<CartCubit>().getCartItems(promoCodeController.text);
+                                                  parentContext.read<CartCubit>().getCartItems(
+                                                    promoCodeController.text,
+                                                  );
                                                   Navigator.pop(parentContext);
                                                 },
                                               ),
@@ -125,7 +127,8 @@ class CartPage extends StatelessWidget {
                                     totalAndSubTotalWidget(
                                       context,
                                       title: "Total Amount",
-                                      amount: state.subtotal - (state.subtotal * state.discount) + 20,
+                                      amount:
+                                          state.subtotal - (state.subtotal * state.discount) + 20,
                                     ),
 
                                     const SizedBox(height: 20.0),
@@ -140,7 +143,12 @@ class CartPage extends StatelessWidget {
                                             // Navigator.pushNamed(context, AppRoutes.checkoutRoute);
                                             pushScreen(
                                               context,
-                                              screen: CheckoutPage(totalAmount: state.subtotal - (state.subtotal * state.discount) + 20),
+                                              screen: CheckoutPage(
+                                                totalAmount:
+                                                    state.subtotal -
+                                                    (state.subtotal * state.discount) +
+                                                    20,
+                                              ),
                                               withNavBar: false,
                                               pageTransitionAnimation:
                                                   PageTransitionAnimation.cupertino,
@@ -164,32 +172,33 @@ class CartPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                body: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.cartItems.length,
-                        itemBuilder: (context, index) {
-                          final cartItem = state.cartItems[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 9.0, horizontal: 26.0),
-                            child: CartItemWidget(
-                              cartItem: cartItem,
-                              counterValue: state.cartItems[index].quantity,
-                              cubit: context.read<CartCubit>(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                body: RefreshIndicator(
+                  backgroundColor: Colors.white,
+                  color: AppColors.primary,
+                  onRefresh: () async {
+                    BlocProvider.of<CartCubit>(context).getCartItems(null);
+                  },
+                  child: ListView.builder(
+                    // shrinkWrap: true,
+                    // physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.cartItems.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = state.cartItems[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 9.0, horizontal: 26.0),
+                        child: CartItemWidget(
+                          cartItem: cartItem,
+                          counterValue: state.cartItems[index].quantity,
+                          cubit: context.read<CartCubit>(),
+                        ),
+                      );
+                    },
                   ),
                 ),
               );
             }
           } else if (state is CartError) {
-            return const Center(child: Text("Something went wrong"));
+            return Center(child: Text(state.message.toString()));
           }
           return const Center(child: Text("Something went wrong!!"));
         },

@@ -10,6 +10,8 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   final _authServices = AuthServicesImpl();
   final _favoriteServices = FavoriteServicesImpl();
 
+  
+
   Future<void> getFavoriteProducts() async {
     emit(FavoriteLoading());
     try {
@@ -27,8 +29,13 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     try {
       await _favoriteServices.removeFavorite(_authServices.getCurrentUser()!.uid, productId);
       emit(FavoriteRemoved(productId));
+
+      final favoriteProducts = await _favoriteServices.getFavorite(
+        _authServices.getCurrentUser()!.uid,
+      );
+      emit(FavoriteLoaded(favoriteProducts));
     } catch (e) {
-      emit(FavoriteRemovingError(e.toString()));
+      emit(FavoriteRemovingError(e.toString(), productId));
     }
   }
 }
