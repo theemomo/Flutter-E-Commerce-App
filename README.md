@@ -75,18 +75,53 @@ Key packages used in this project:
 
 ## Architecture & State Management
 
-This project follows a **BLoC (Cubit) + Services Layer** architecture.
+This project follows a **BLoC (Cubit) + Clean Services Layer** architecture to separate UI, business logic, and Firebase operations.  
 
-- **Cubits**
-  - `AuthCubit`: Login, sign-up, logout, update password/email, delete account  
-  - `HomeCubit`: Fetch products and manage favorites  
-  - `CartCubit`: Manage cart items, quantities, and promo codes  
-  - `FavoriteCubit`: Handle favorite products list  
-  - `LocationCubit`: Manage user’s location  
+---
 
-- **Services Layer**
-  - `AuthServicesImpl`: Encapsulates Firebase Auth operations  
-  - `HomeServicesImpl`, `FavoriteServicesImpl`, `CartServicesImpl`: Handle Firestore operations  
+### Cubits
+
+- **AuthCubit**  
+  - Login, register, logout  
+  - Update email and password  
+  - Delete account  
+  - Handle authentication state changes  
+
+- **HomeCubit**  
+  - Fetch products from Firestore  
+  - Manage product categories  
+  - Toggle favorite status on product items  
+
+- **CartCubit**  
+  - Fetch cart items from Firestore  
+  - Add/remove products from cart  
+  - Update item quantities  
+  - Apply promo codes and recalculate totals  
+
+- **FavoriteCubit**  
+  - Manage the list of favorite products  
+  - Add/remove items from favorites  
+  - Sync favorites with Firestore  
+
+- **LocationCubit**  
+  - Handle user’s selected location (for delivery or region-based browsing)  
+  - Update and persist location data  
+
+---
+
+### Services Layer
+
+Each cubit depends on a dedicated **Service Implementation** that encapsulates Firebase logic:
+
+- `AuthServicesImpl` → Handles Firebase Auth API calls  
+- `HomeServicesImpl` → Fetches products and category data  
+- `CartServicesImpl` → Cart operations and discount logic  
+- `FavoriteServicesImpl` → Favorite products logic  
+- `LocationServicesImpl` → Location management  
+- `OrderServicesImpl` → Order placement and retrieval  
+
+This keeps the codebase **modular, testable, and scalable**.
+
 
 ---
 
@@ -97,25 +132,11 @@ This project follows a **BLoC (Cubit) + Services Layer** architecture.
 ```dart
 cartCubit.getCartItems(promoCode: 'SAVE10');
 ```
-
-### Toggle Favorite Item
-
 ```dart
-homeCubit.setFavorite(productItem);
+cartCubit.getCartItems(promoCode: 'SAVE20');
 ```
-
-### Update Password
-
 ```dart
-authCubit.updatePassword(newPassword);
-```
-
-### Navigate After Update
-
-```dart
-if (state is UpdatePasswordSuccessfully) {
-  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.loginRoute, (r) => false);
-}
+cartCubit.getCartItems(promoCode: 'SAVE30');
 ```
 
 ---
