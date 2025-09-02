@@ -1,18 +1,16 @@
-````markdown
 # Flutter E-Commerce App
 
-A full-featured e-commerce application built with Flutter and Firebase, featuring secure user authentication, product browsing, shopping cart management, favorites, and order capabilities.
+A full-featured e-commerce application built with **Flutter** and **Firebase**, featuring secure user authentication, product browsing, shopping cart management, favorites, discount codes, and order management.
 
 ---
 
 ## Table of Contents
 
 - [Features](#features)  
-- [Screenshots](#screenshots)  
 - [Getting Started](#getting-started)  
 - [Dependencies](#dependencies)  
 - [Architecture & State Management](#architecture--state-management)  
-- [Usage](#usage)  
+- [Usage Examples](#usage-examples)  
 - [Contributing](#contributing)  
 - [License](#license)
 
@@ -20,80 +18,75 @@ A full-featured e-commerce application built with Flutter and Firebase, featurin
 
 ## Features
 
-- **Authentication**: Email/password, Facebook (and optionally Google)  
-- **Product Catalog**: View products by category, see details, and add to cart or favorites  
+- **Authentication**: Email/Password, Facebook, and optionally Google  
+- **Product Catalog**: Browse products by category, view details, and add to cart or favorites  
 - **Favorites & Cart**: Add/remove items, update quantities, and view subtotal with discount support  
-- **Discount Codes**: Apply promo codes for real-time discount calculations  
-- **User Management**: Update password or email, delete account  
-- **UI Components**: Carousel, grid product layouts, responsive dialogs  
+- **Discount Codes**: Apply promo codes with real-time discount calculations  
+- **User Management**: Update password or email, and delete account  
+- **UI Components**: Carousel, grid product layouts, and responsive dialogs  
 - **Persistent Data**: Firebase Authentication for auth; Firestore for products, favorites, cart, and user data  
-
----
-
-## Screenshots
-
-*(Add your app screenshots here)*
-
-- Home Screen (Browse products, favorites)  
-- Product Detail Screen  
-- Cart & Checkout View  
-- Settings & Authentication Flow  
 
 ---
 
 ## Getting Started
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/theemomo/Flutter-E-Commerce-App.git
-   cd Flutter-E-Commerce-App
-````
+### 1. Clone the repository
 
-2. **Install dependencies**
+```bash
+git clone https://github.com/theemomo/Flutter-E-Commerce-App.git
+cd Flutter-E-Commerce-App
+```
 
-   ```bash
-   flutter pub get
-   ```
+### 2. Install dependencies
 
-3. **Firebase Setup**
+```bash
+flutter pub get
+```
 
-   * Create a Firebase project
-   * Enable Authentication (Email/Password, Facebook, Google if used)
-   * Add Android/iOS app and replace `google-services.json` / `GoogleService-Info.plist`
-   * Enable Firestore and structure collections for `products`, `favorites`, `cart`, `users`, etc.
+### 3. Firebase setup
 
-4. **Run the application**
+- Create a Firebase project.  
+- Enable **Authentication** (Email/Password, Facebook, Google if needed).  
+- Add Android/iOS apps and replace `google-services.json` (Android) and `GoogleService-Info.plist` (iOS).  
+- Enable **Firestore** and create collections:  
+  - `products`  
+  - `favorites`  
+  - `cart`  
+  - `users`  
 
-   ```bash
-   flutter run
-   ```
+### 4. Run the application
+
+```bash
+flutter run
+```
 
 ---
 
 ## Dependencies
 
-Key packages used in this project include:
+Key packages used in this project:
 
-* `flutter_bloc` — State management with Cubit/BLoC
-* `firebase_auth`, `cloud_firestore` — Firebase backend integration
-* `flutter_carousel_widget`, `cached_network_image` — Carousel and image loading
-* Additional UI packages as needed (icons, animations, etc.)
+- `flutter_bloc` — State management with Cubit/BLoC  
+- `firebase_auth`, `cloud_firestore` — Firebase backend integration  
+- `flutter_carousel_widget`, `cached_network_image` — Carousel and image handling  
+- `equatable`, `fluttertoast`, and other UI/utility packages as needed  
 
 ---
 
 ## Architecture & State Management
 
-* **BLoC (Cubit)** + **Clean Services Layer**
+This project follows a **BLoC (Cubit) + Services Layer** architecture.
 
-  * `AuthCubit`: Manages login, sign-up, logout, update password/email, delete account
-  * `HomeCubit`: Fetch products, favorites; toggle favorite status
-  * `CartCubit`: Fetch cart items, update quantities, apply promo discount
-  * `FavoriteCubit`: Display favorite products list
-  * `LocationCubit`: Manage user’s selected location
-* **Services Layer**
+- **Cubits**
+  - `AuthCubit`: Login, sign-up, logout, update password/email, delete account  
+  - `HomeCubit`: Fetch products and manage favorites  
+  - `CartCubit`: Manage cart items, quantities, and promo codes  
+  - `FavoriteCubit`: Handle favorite products list  
+  - `LocationCubit`: Manage user’s location  
 
-  * `AuthServicesImpl`: Encapsulates Firebase calls
-  * `HomeServicesImpl` / `FavoriteServicesImpl` / `CartServicesImpl`: Encapsulate Firestore operations
+- **Services Layer**
+  - `AuthServicesImpl`: Encapsulates Firebase Auth operations  
+  - `HomeServicesImpl`, `FavoriteServicesImpl`, `CartServicesImpl`: Handle Firestore operations  
 
 ---
 
@@ -102,7 +95,7 @@ Key packages used in this project include:
 ### Apply a Promo Code
 
 ```dart
-cartCubit.getCartItems(promoCode: 'DISCOUNT10');
+cartCubit.getCartItems(promoCode: 'SAVE10');
 ```
 
 ### Toggle Favorite Item
@@ -119,8 +112,6 @@ authCubit.updatePassword(newPassword);
 
 ### Navigate After Update
 
-Listener in `BlocConsumer` handles redirect after success:
-
 ```dart
 if (state is UpdatePasswordSuccessfully) {
   Navigator.pushNamedAndRemoveUntil(context, AppRoutes.loginRoute, (r) => false);
@@ -131,17 +122,17 @@ if (state is UpdatePasswordSuccessfully) {
 
 ## Contributing
 
-Contributions are welcome! Feel free to submit pull requests for bug fixes, enhancements, or documentation improvements. Please ensure issues are discussed before submitting major changes.
+Contributions are welcome!  
+- Submit pull requests for bug fixes, features, or documentation.  
+- For major changes, please open an issue first to discuss what you’d like to change.  
 
 ---
 
 ## License
 
-This project is distributed under the MIT License. See `LICENSE` for more details.
+This project is distributed under the **MIT License**.  
+See the `LICENSE` file for details.  
 
 ---
 
-⭐ If you find this project useful, please don’t forget to star the repository!
-
-```
-```
+⭐ If you find this project useful, please star the repository!
