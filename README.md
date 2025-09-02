@@ -1,4 +1,3 @@
-
 ````markdown
 # Flutter E-Commerce App
 
@@ -6,7 +5,7 @@ A full-featured e-commerce application built with Flutter and Firebase, featurin
 
 ---
 
-##  Table of Contents
+## Table of Contents
 
 - [Features](#features)  
 - [Screenshots](#screenshots)  
@@ -19,30 +18,30 @@ A full-featured e-commerce application built with Flutter and Firebase, featurin
 
 ---
 
-##  Features
+## Features
 
-- **Authentication**: Email/password, Facebook (and optionally Google)
-- **Product Catalog**: View products by category, see details, and add to cart or favorites
-- **Favorites & Cart**: Add/remove items, update quantities, and view subtotal with discount support
-- **Discount Codes**: Apply promo codes for real-time discount calculations
-- **User Management**: Update password or email, delete account
-- **UI Components**: Carousel, grid product layouts, responsive dialogs
-- **Persistent Data**: Firebase Authentication for auth; Firestore for products, favorites, cart, and user data
+- **Authentication**: Email/password, Facebook (and optionally Google)  
+- **Product Catalog**: View products by category, see details, and add to cart or favorites  
+- **Favorites & Cart**: Add/remove items, update quantities, and view subtotal with discount support  
+- **Discount Codes**: Apply promo codes for real-time discount calculations  
+- **User Management**: Update password or email, delete account  
+- **UI Components**: Carousel, grid product layouts, responsive dialogs  
+- **Persistent Data**: Firebase Authentication for auth; Firestore for products, favorites, cart, and user data  
 
 ---
 
-##  Screenshots
+## Screenshots
 
 *(Add your app screenshots here)*
 
-- Home Screen (Browse products, favorites)
-- Product Detail Screen
-- Cart & Checkout View
-- Settings & Authentication Flow
+- Home Screen (Browse products, favorites)  
+- Product Detail Screen  
+- Cart & Checkout View  
+- Settings & Authentication Flow  
 
 ---
 
-##  Getting Started
+## Getting Started
 
 1. **Clone the repository**
    ```bash
@@ -79,8 +78,6 @@ Key packages used in this project include:
 * `firebase_auth`, `cloud_firestore` — Firebase backend integration
 * `flutter_carousel_widget`, `cached_network_image` — Carousel and image loading
 * Additional UI packages as needed (icons, animations, etc.)
-
-*(List more in your `pubspec.yaml`)*
 
 ---
 
@@ -147,5 +144,4 @@ This project is distributed under the MIT License. See `LICENSE` for more detail
 ⭐ If you find this project useful, please don’t forget to star the repository!
 
 ```
-
-
+```
