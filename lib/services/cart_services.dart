@@ -6,6 +6,7 @@ import 'package:e_commerce/utils/api_paths.dart';
 abstract class CartServices {
   Future<List<AddToCartModel>> fetchCartItems();
   Future<void> setCartItem(AddToCartModel cartItem);
+  Future<void> deleteCartItem(String id);
 }
 
 class CartServicesImpl implements CartServices {
@@ -20,9 +21,19 @@ class CartServicesImpl implements CartServices {
     );
     return result;
   }
-  
+
   @override
   Future<void> setCartItem(AddToCartModel cartItem) async {
-    await _firestoreServices.setData(path: ApiPaths.cartItem(_authServices.getCurrentUser()!.uid, cartItem.id), data: cartItem.toMap());
+    await _firestoreServices.setData(
+      path: ApiPaths.cartItem(_authServices.getCurrentUser()!.uid, cartItem.id),
+      data: cartItem.toMap(),
+    );
+  }
+
+  @override
+  Future<void> deleteCartItem(String id) async {
+    await _firestoreServices.deleteData(
+      path: ApiPaths.cartItem(_authServices.getCurrentUser()!.uid, id),
+    );
   }
 }

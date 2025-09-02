@@ -9,11 +9,14 @@ abstract class AuthServices {
   Future<void> logout();
   // Future<void> authWithGoogle();
   Future<bool> authWithFacebook();
+  Future<void> deleteUser();
+  Future<void> updatePassword(String newPassword);
+  Future<void> updateEmail(String newEmail);
+  
 }
 
 class AuthServicesImpl implements AuthServices {
   final _firebaseAuth = FirebaseAuth.instance;
-
   @override
   Future<bool> loginWithEmailAndPassword(String email, String password) async {
     // Implement login logic here
@@ -73,5 +76,20 @@ class AuthServicesImpl implements AuthServices {
       return true;
     }
     return false;
+  }
+
+  @override
+  Future<void> deleteUser() async {
+    await _firebaseAuth.currentUser!.delete();
+  }
+
+  @override
+  Future<void> updatePassword(String newPassword) async {
+    await _firebaseAuth.currentUser!.updatePassword(newPassword);
+  }
+  
+  @override
+  Future<void> updateEmail(String newEmail) async {
+    await _firebaseAuth.currentUser!.verifyBeforeUpdateEmail(newEmail);
   }
 }

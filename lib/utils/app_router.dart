@@ -1,6 +1,9 @@
+import 'package:e_commerce/views/pages/change_password.dart';
 import 'package:e_commerce/views/pages/choose_location_page.dart';
 import 'package:e_commerce/views/pages/add_new_card_page.dart';
 import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
+import 'package:e_commerce/views/pages/list_locations_page.dart';
+import 'package:e_commerce/views/pages/list_payment_cards.dart';
 import 'package:e_commerce/views/pages/login_page.dart';
 import 'package:e_commerce/views/pages/product_details_page.dart';
 import 'package:e_commerce/views/pages/register_page.dart';
@@ -39,6 +42,18 @@ class AppRouter {
 
       case AppRoutes.settingsRoute:
         return CupertinoPageRoute(settings: settings, builder: (_) => const SettingsPage());
+
+      case AppRoutes.deleteAddressRoute:
+        return CupertinoPageRoute(settings: settings, builder: (_) => const ListLocationsPage());
+
+      case AppRoutes.deletePaymentCardsRoute:
+        return CupertinoPageRoute(settings: settings, builder: (_) => const ListPaymentCards());
+
+      // case AppRoutes.changeEmailRoute:
+      //   return CupertinoPageRoute(settings: settings, builder: (_) => const ChangeEmail());
+
+      case AppRoutes.changePasswordRoute:
+        return CupertinoPageRoute(settings: settings, builder: (_) => const ChangePassword());
 
       default:
         return CupertinoPageRoute(

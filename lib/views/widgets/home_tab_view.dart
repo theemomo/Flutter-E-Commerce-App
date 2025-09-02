@@ -18,97 +18,111 @@ class HomeTabView extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: bloc,
       buildWhen: (previous, current) =>
-          current is HomeLoading || current is HomeLoaded || current is HomeError,
+          current is HomeLoading ||
+          current is HomeLoaded ||
+          current is HomeError ||
+          current is HomeInitial,
       builder: (context, state) {
+        if (state is HomeInitial) {
+          bloc.getHomeData();
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator.adaptive());
         } else if (state is HomeLoaded) {
           debugPrint(state.products[0].price.toString());
           debugPrint(state.products[0].isFav.toString()); // always false !!
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                FlutterCarousel.builder(
-                  itemCount: state.carouselItems.length,
-                  options: FlutterCarouselOptions(
-                    viewportFraction: 1,
-                    height: size.height * 0.2,
-                    autoPlay: true,
-                    slideIndicator: CircularWaveSlideIndicator(
-                      slideIndicatorOptions: const SlideIndicatorOptions(
-                        currentIndicatorColor: Colors.deepPurple,
-                        indicatorBackgroundColor: Colors.grey,
-                        indicatorRadius: 4,
-                        itemSpacing: 15,
-                      ),
-                    ),
-                    showIndicator: true,
-                    floatingIndicator: false,
-                  ),
-                  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                      ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(11),
-                        child: CachedNetworkImage(
-                          imageUrl: state.carouselItems[itemIndex].imgUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator.adaptive()),
-                          errorWidget: (context, url, error) =>
-                              const Center(child: Icon(Icons.error, color: Colors.red)),
+          return RefreshIndicator(
+            displacement: 5,
+            onRefresh: () async {
+              await BlocProvider.of<HomeCubit>(context).getHomeData();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  FlutterCarousel.builder(
+                    itemCount: state.carouselItems.length,
+                    options: FlutterCarouselOptions(
+                      viewportFraction: 1,
+                      height: size.height * 0.2,
+                      autoPlay: true,
+                      slideIndicator: CircularWaveSlideIndicator(
+                        slideIndicatorOptions: const SlideIndicatorOptions(
+                          currentIndicatorColor: Colors.deepPurple,
+                          indicatorBackgroundColor: Colors.grey,
+                          indicatorRadius: 4,
+                          itemSpacing: 15,
                         ),
                       ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "New Arrivals 🔥",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w600),
+                      showIndicator: true,
+                      floatingIndicator: false,
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "See All",
-                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w600,
+                    itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(11),
+                          child: CachedNetworkImage(
+                            imageUrl: state.carouselItems[itemIndex].imgUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                const Center(child: CircularProgressIndicator.adaptive()),
+                            errorWidget: (context, url, error) =>
+                                const Center(child: Icon(Icons.error, color: Colors.red)),
+                          ),
                         ),
-                        // onPressed: () {},
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "New Arrivals 🔥",
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w600),
                       ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "See All",
+                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          // onPressed: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: orientation == Orientation.portrait ? 2 : 5,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: orientation == Orientation.portrait ? 0.6 : 0.5,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: orientation == Orientation.portrait ? 2 : 5,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 20,
-                    childAspectRatio: orientation == Orientation.portrait ? 0.6 : 0.5,
+                    itemCount: state.products.length,
+                    itemBuilder: (context, index) => InkWell(
+                      child: ProductGridItem(productItem: state.products[index]),
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).pushNamed(
+                          AppRoutes.productDetailsRoute,
+                          arguments: state.products[index].id,
+                        );
+                      },
+                    ),
                   ),
-                  itemCount: state.products.length,
-                  itemBuilder: (context, index) => InkWell(
-                    child: ProductGridItem(productItem: state.products[index]),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true).pushNamed(
-                        AppRoutes.productDetailsRoute,
-                        arguments: state.products[index].id,
-                      );
-                    },
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         } else if (state is HomeError) {
           return Center(child: Text(state.message, style: Theme.of(context).textTheme.labelLarge));
-        } else {
-          return const SizedBox.shrink();
+        }else{
+          return const SizedBox();
         }
+        
       },
     );
   }

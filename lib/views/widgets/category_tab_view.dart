@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce/models/category_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/home_cubit/home_cubit.dart';
 import 'package:flutter/material.dart';

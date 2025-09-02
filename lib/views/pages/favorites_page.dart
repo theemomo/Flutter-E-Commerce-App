@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/favorite_cubit/favorite_cubit.dart';
 import 'package:e_commerce/views/widgets/favorites_product_item.dart';
@@ -48,7 +49,26 @@ class FavoritesPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                body: const Center(child: Text("Your wishlist is empty")),
+                body: Padding(
+                  padding: const EdgeInsets.only(bottom: 70.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: "https://cdn-icons-png.flaticon.com/512/13631/13631495.png",
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                      Center(
+                        child: Text(
+                          "Your wishlist is empty !!",
+                          style: Theme.of(context).textTheme.titleLarge!.copyWith(color:const Color.fromARGB(195, 158, 158, 158),),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               );
             } else {
               return Scaffold(

@@ -33,3 +33,21 @@ final class FacebookAuthFailure extends AuthState {
 
   FacebookAuthFailure(this.error);
 }
+
+final class UpdatePasswordSuccessfully extends AuthState {}
+
+final class UpdatingPassword extends AuthState {}
+
+final class UpdatingPasswordFailure extends AuthState {
+  final String message;
+  UpdatingPasswordFailure(this.message);
+}
+
+final class DeletingAccount extends AuthState {}
+
+final class AccountDeleted extends AuthState {}
+
+final class ErrorDeletingAccount extends AuthState {
+  final String message;
+  ErrorDeletingAccount(this.message);
+}

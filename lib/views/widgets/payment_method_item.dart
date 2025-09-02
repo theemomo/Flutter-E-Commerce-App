@@ -4,7 +4,7 @@ import 'package:e_commerce/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethodItem extends StatelessWidget {
-  final PaymentCardModel? paymentCard;
+  final PaymentCardModel paymentCard;
   final VoidCallback? onItemTapped;
   const PaymentMethodItem({
     super.key,
@@ -34,7 +34,7 @@ class PaymentMethodItem extends StatelessWidget {
             fit: BoxFit.contain,
           ),
           title: const Text("MasterCard"),
-          subtitle: Text(paymentCard!.cardNumber, style: const TextStyle(fontSize: 16)),
+          subtitle: Text(paymentCard.cardNumber, style: const TextStyle(fontSize: 16)),
           trailing: const Icon(Icons.arrow_forward_ios, size: 15),
         ),
       ),

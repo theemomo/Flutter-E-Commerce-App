@@ -7,5 +7,9 @@ class AppRoutes {
   static const String addNewCardRoute = '/add-new-card';
   static const String addNewAddressRoute = '/add-new-address';
   static const String settingsRoute = '/settings';
+  static const String deleteAddressRoute = '/settings/addresses';
+  static const String deletePaymentCardsRoute = '/settings/payment-cards';
+  static const String changePasswordRoute = '/settings/change-password';
+  static const String changeEmailRoute = '/settings/change-email';
   static const String test = "/04erd";
 }

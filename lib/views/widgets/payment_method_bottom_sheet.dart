@@ -11,6 +11,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final paymentCubit = BlocProvider.of<PaymentMethodsCubit>(context);
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -71,8 +72,8 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                         child: Card(
                           elevation: 0,
                           child: ListTile(
-                            onTap: () {
-                              BlocProvider.of<PaymentMethodsCubit>(
+                            onTap: () async {
+                              await BlocProvider.of<PaymentMethodsCubit>(
                                 context,
                               ).changePaymentMethod(card.id);
                             },
@@ -138,7 +139,9 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                     elevation: 0,
                     child: ListTile(
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.addNewCardRoute);
+                        Navigator.pushNamed(context, AppRoutes.addNewCardRoute).then((value) async {
+                          await paymentCubit.fetchPaymentCards();
+                        });
                       },
                       leading: const Icon(
                         CupertinoIcons.plus_circled,
@@ -160,20 +163,19 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                   builder: (context, state) {
                     if (state is PaymentMethodConfirmLoading) {
                       return SizedBox(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      child: ElevatedButton(
-                        onPressed: () {
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const CircularProgressIndicator.adaptive(
+                            valueColor: AlwaysStoppedAnimation(Colors.white),
+                          ),
                         ),
-                        child: const CircularProgressIndicator.adaptive(
-                          valueColor: AlwaysStoppedAnimation(Colors.white),
-                        ),
-                      ),
-                    );
+                      );
                     } else if (state is PaymentMethodConfirmFailure) {
                       return Center(
                         child: Text(state.error, style: const TextStyle(color: Colors.red)),
@@ -185,8 +187,8 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                       width: double.infinity,
                       height: MediaQuery.of(context).size.height * 0.06,
                       child: ElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<PaymentMethodsCubit>(context).confirmPaymentMethod();
+                        onPressed: () async{
+                          await BlocProvider.of<PaymentMethodsCubit>(context).confirmPaymentMethod();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,

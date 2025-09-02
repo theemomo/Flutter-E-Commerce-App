@@ -21,7 +21,6 @@ class CartCubit extends Cubit<CartState> {
       cart = cartItems;
       final subtotal = cartItems.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
       final promoCodes = await _discountServices.fetchPromoCodes();
-      
 
       if (promoCode != null) {
         final PromoCodeModel promo = promoCodes.firstWhere(
@@ -41,16 +40,56 @@ class CartCubit extends Cubit<CartState> {
   Future<void> incrementCounter(AddToCartModel cartItem) async {
     final updatedCartItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
     await _cartServices.setCartItem(updatedCartItem);
-    final subtotal = cart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
 
+    // Update the cart list in memory
+    cart = cart.map((item) {
+      if (item.product.id == cartItem.product.id) {
+        return updatedCartItem;
+      }
+      return item;
+    }).toList();
+
+    final subtotal = cart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
     emit(CartLoaded(cartItems: cart, subtotal: subtotal, discount: promoCodeDiscount));
   }
 
   Future<void> decrementCounter(AddToCartModel cartItem) async {
+  if (cartItem.quantity <= 1) {
+    // Delete from Firebase
+    await _cartServices.deleteCartItem(cartItem.id);
+
+    // ✅ Remove from local cart list immediately
+    cart = cart.where((item) => item.product.id != cartItem.product.id).toList();
+
+    // Recalculate subtotal
+    final subtotal = cart.fold(
+      0.0,
+      (sum, item) => sum + item.product.price * item.quantity,
+    );
+
+    emit(CartLoaded(cartItems: cart, subtotal: subtotal, discount: promoCodeDiscount));
+  } else {
+    // Update in Firebase
     final updatedCartItem = cartItem.copyWith(quantity: cartItem.quantity - 1);
     await _cartServices.setCartItem(updatedCartItem);
-    final subtotal = cart.fold(0.0, (sum, item) => sum + item.product.price * item.quantity);
+
+    // ✅ Update local cart list immediately
+    cart = cart.map((item) {
+      if (item.product.id == cartItem.product.id) {
+        return updatedCartItem;
+      }
+      return item;
+    }).toList();
+
+    // Recalculate subtotal
+    final subtotal = cart.fold(
+      0.0,
+      (sum, item) => sum + item.product.price * item.quantity,
+    );
 
     emit(CartLoaded(cartItems: cart, subtotal: subtotal, discount: promoCodeDiscount));
   }
 }
+
+}
+

@@ -24,7 +24,7 @@ class CheckoutPage extends StatelessWidget {
         onTap: () {
           Navigator.of(
             context,
-          ).pushNamed(AppRoutes.addNewCardRoute).then((value) => checkoutCubit.getCheckoutItems());
+          ).pushNamed(AppRoutes.addNewCardRoute).then((value) async => await checkoutCubit.getCheckoutItems());
         },
       );
     } else {
@@ -40,13 +40,13 @@ class CheckoutPage extends StatelessWidget {
               return BlocProvider(
                 create: (context) {
                   final cubit = PaymentMethodsCubit();
-                  cubit.fetchPaymentMethods();
+                  cubit.fetchPaymentCards();
                   return cubit;
                 },
                 child: const PaymentMethodBottomSheet(),
               );
             },
-          ).then((value) => checkoutCubit.getCheckoutItems());
+          ).then((value) async => await checkoutCubit.getCheckoutItems());
         },
       );
     }
@@ -107,7 +107,7 @@ class CheckoutPage extends StatelessWidget {
                   return const Center(child: Text("Something went wrong!"));
                 } else if (state is CheckoutLoaded) {
                   if (state.cartItems.isEmpty) {
-                    return const Center(child: Text("Your cart is empty"));
+                    return const Center(child: Text("Your cart is empty, you can't visit the checkout page"));
                   }
                   final chosenLocation = state.shippingAddress;
                   return SingleChildScrollView(
@@ -121,8 +121,8 @@ class CheckoutPage extends StatelessWidget {
                               Navigator.of(context)
                                   .pushNamed(AppRoutes.addNewAddressRoute)
                                   .then(
-                                    (value) =>
-                                        BlocProvider.of<CheckoutCubit>(context).getCheckoutItems(),
+                                    (value) async =>
+                                        await BlocProvider.of<CheckoutCubit>(context).getCheckoutItems(),
                                   );
                             },
                           ),

@@ -29,19 +29,18 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> _saveUserData({required String email, required String username}) async {
     final currentUser = authServices.getCurrentUser();
 
-        final UserData userData = UserData(
-          id: currentUser!.uid,
-          email: email,
-          username: username,
-          createdAt: DateTime.now().toString(),
-        );
+    final UserData userData = UserData(
+      id: currentUser!.uid,
+      email: email,
+      username: username,
+      createdAt: DateTime.now().toString(),
+    );
 
-        await firestore.setData(
-          path: ApiPaths.users(userId: currentUser.uid),
-          data: userData.toMap(),
-        );
+    await firestore.setData(
+      path: ApiPaths.users(userId: currentUser.uid),
+      data: userData.toMap(),
+    );
   }
-
 
   Future<void> register({
     required String email,
@@ -52,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final result = await authServices.registerWithEmailAndPassword(email, password);
       if (result) {
-        await _saveUserData(email: email, username: username); 
+        await _saveUserData(email: email, username: username);
 
         emit(AuthSuccess());
       } else {
@@ -94,6 +93,26 @@ class AuthCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       emit(AuthFailure(e.toString()));
+    }
+  }
+
+  Future<void> updatePassword(newPassword) async {
+    emit(UpdatingPassword());
+    try {
+      await authServices.updatePassword(newPassword);
+      emit(UpdatePasswordSuccessfully());
+    } catch (e) {
+      emit(UpdatingPasswordFailure(e.toString()));
+    }
+  }
+
+  Future<void> deleteMyAccount() async {
+    emit(DeletingAccount());
+    try {
+      await authServices.deleteUser();
+      emit(AccountDeleted());
+    } catch (e) {
+      emit(ErrorDeletingAccount(e.toString()));
     }
   }
 }

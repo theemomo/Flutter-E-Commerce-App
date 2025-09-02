@@ -43,6 +43,14 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                   icon: CupertinoIcons.creditcard,
                   inputType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "This field cannot be empty";
+                    } else if (value.length != 16) {
+                      return "Number must be exactly 16 digits";
+                    }
+                    return null;
+                  },
                 ),
                 LabelWithTextfieldNewCardWidget(
                   label: "Card Holder Name",
@@ -51,6 +59,8 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                   icon: CupertinoIcons.person,
                   inputType: TextInputType.name,
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z ]*$'))],
+                  validator: (value) =>
+                      value == null || value.isEmpty ? "Please Enter a Card Holder Name" : null,
                 ),
                 LabelWithTextfieldNewCardWidget(
                   label: "Expired",
@@ -62,6 +72,8 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
                     LengthLimitingTextInputFormatter(5),
                   ],
+                  validator: (value) =>
+                      value == null || value.isEmpty ? "Please Enter The Expired Date" : null,
                 ),
                 LabelWithTextfieldNewCardWidget(
                   label: "CVV",
@@ -70,6 +82,8 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                   icon: CupertinoIcons.lock,
                   inputType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d{0,3}$'))],
+                  validator: (value) =>
+                      value == null || value.isEmpty ? "Please Enter a CVV Number" : null,
                 ),
 
                 const Expanded(child: SizedBox()),
@@ -80,8 +94,7 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                   child: BlocConsumer<PaymentMethodsCubit, PaymentMethodsState>(
                     listener: (context, state) {
                       if (state is AddNewCardSuccess) {
-                          Navigator.of(context).pop();
-                        
+                        Navigator.of(context).pop();
                       } else if (state is AddNewCardFailure) {
                         ScaffoldMessenger.of(
                           context,
@@ -96,8 +109,8 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                         current is AddNewCardSuccess ||
                         current is AddNewCardFailure,
                     builder: (context, state) {
-
-                      if (state is AddNewCardLoading) { // ! loading
+                      if (state is AddNewCardLoading) {
+                        // ! loading
                         return ElevatedButton(
                           onPressed: () {
                             null;
@@ -110,8 +123,8 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                             child: CircularProgressIndicator(color: AppColors.white),
                           ),
                         );
-
-                      } else if (state is AddNewCardSuccess) { // ! Success
+                      } else if (state is AddNewCardSuccess) {
+                        // ! Success
                         return ElevatedButton(
                           onPressed: () {
                             null;
@@ -122,8 +135,8 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                           ),
                           child: const Center(child: Icon(Icons.check)),
                         );
-
-                      } else if (state is AddNewCardFailure) { // ! Failure
+                      } else if (state is AddNewCardFailure) {
+                        // ! Failure
                         return Center(
                           child: Text(
                             "Error: ${state.error}",
@@ -132,10 +145,10 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                         );
                       }
                       return ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           // Handle adding card action
                           if (_formKey.currentState!.validate()) {
-                            BlocProvider.of<PaymentMethodsCubit>(context).addNewCard(
+                            await BlocProvider.of<PaymentMethodsCubit>(context).addNewCard(
                               cardNumber: _cardNumberController.text,
                               cardHolderName: _cardHolderNameController.text,
                               cardExpireDate: _cardExpireDateController.text,

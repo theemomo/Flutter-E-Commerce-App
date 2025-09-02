@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/cart_cubit/cart_cubit.dart';
 import 'package:e_commerce/views/pages/checkout_page.dart';
 import 'package:e_commerce/views/widgets/cart_item_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dash/flutter_dash.dart';
@@ -28,10 +30,41 @@ class CartPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator.adaptive());
           } else if (state is CartLoaded) {
             if (state.cartItems.isEmpty) {
-              return const Center(child: Text("Your cart is empty"));
+              return Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    onPressed: () {
+                      BlocProvider.of<CartCubit>(context).getCartItems(null);
+                    },
+                    icon: const Icon(CupertinoIcons.refresh_thick),
+                  ),
+                ),
+                body: Padding(
+                  padding: const EdgeInsets.only(bottom: 70.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: "https://cdn-icons-png.flaticon.com/512/13637/13637462.png",
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                      ),
+                      Center(
+                        child: Text(
+                          "Your cart is empty !!",
+                          style: Theme.of(context).textTheme.titleLarge!.copyWith(color:const Color.fromARGB(195, 158, 158, 158),),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             } else {
               return Scaffold(
                 appBar: AppBar(
+                  leading: IconButton(onPressed: () {
+                    BlocProvider.of<CartCubit>(context).getCartItems(null);
+                  }, icon: const Icon(CupertinoIcons.refresh_thick)),
                   actions: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),

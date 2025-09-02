@@ -9,6 +9,7 @@ class LabelWithTextfieldNewCardWidget extends StatefulWidget {
   final IconData icon;
   final TextInputType inputType;
   final List<TextInputFormatter> inputFormatters;
+  final FormFieldValidator? validator;
   const LabelWithTextfieldNewCardWidget({
     super.key,
     required this.label,
@@ -17,6 +18,7 @@ class LabelWithTextfieldNewCardWidget extends StatefulWidget {
     required this.icon,
     required this.inputType,
     required this.inputFormatters,
+    this.validator
   });
 
   @override
@@ -36,8 +38,7 @@ class _LabelWithTextfieldNewCardWidgetState extends State<LabelWithTextfieldNewC
           TextFormField(
             keyboardType: widget.inputType,
             inputFormatters: widget.inputFormatters,
-            validator: (value) =>
-                value == null || value.isEmpty ? "Please Enter a ${widget.label}" : null,
+            validator: widget.validator,
             controller: widget.controller,
             decoration: InputDecoration(
               prefixIcon: Icon(widget.icon, color: AppColors.grey.withValues(alpha: 0.8)),

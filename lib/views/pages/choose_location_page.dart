@@ -96,10 +96,10 @@ class ChooseLocationPage extends StatelessWidget {
                         return IconButton(
                           icon: const Icon(CupertinoIcons.plus_circle),
                           color: AppColors.grey.withValues(alpha: 0.8),
-                          onPressed: () {
+                          onPressed: () async {
                             // Handle the plus icon press
                             if (locationController.text.isNotEmpty) {
-                              BlocProvider.of<LocationCubit>(
+                              await BlocProvider.of<LocationCubit>(
                                 context,
                               ).addLocation(locationController.text);
                             } else {
