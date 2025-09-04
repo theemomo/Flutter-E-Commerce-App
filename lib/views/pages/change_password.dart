@@ -11,7 +11,7 @@ class ChangePassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final newPasswordController = TextEditingController();
-    final GlobalKey<FormState> _passwordFormKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
     return BlocProvider(
       create: (context) => AuthCubit(),
       child: Scaffold(
@@ -50,7 +50,7 @@ class ChangePassword extends StatelessWidget {
               const SizedBox(height: 24),
               Expanded(
                 child: Form(
-                  key: _passwordFormKey,
+                  key: passwordFormKey,
                   child: TextFormField(
                     keyboardType: TextInputType.visiblePassword,
                     controller: newPasswordController,
@@ -106,7 +106,7 @@ class ChangePassword extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.06,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (_passwordFormKey.currentState!.validate()) {
+                        if (passwordFormKey.currentState!.validate()) {
                           BlocProvider.of<AuthCubit>(context).updatePassword(newPasswordController.text);
                         }
                       },

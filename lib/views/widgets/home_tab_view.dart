@@ -30,8 +30,6 @@ class HomeTabView extends StatelessWidget {
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator.adaptive());
         } else if (state is HomeLoaded) {
-          debugPrint(state.products[0].price.toString());
-          debugPrint(state.products[0].isFav.toString()); // always false !!
           return RefreshIndicator(
             displacement: 5,
             onRefresh: () async {
