@@ -1,3 +1,5 @@
+import 'package:e_commerce/services/firestore_services.dart';
+import 'package:e_commerce/utils/api_paths.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
@@ -12,11 +14,11 @@ abstract class AuthServices {
   Future<void> deleteUser();
   Future<void> updatePassword(String newPassword);
   Future<void> updateEmail(String newEmail);
-  
 }
 
 class AuthServicesImpl implements AuthServices {
   final _firebaseAuth = FirebaseAuth.instance;
+  final _firestoreServices = FirestoreServices.instance;
   @override
   Future<bool> loginWithEmailAndPassword(String email, String password) async {
     // Implement login logic here
@@ -81,13 +83,16 @@ class AuthServicesImpl implements AuthServices {
   @override
   Future<void> deleteUser() async {
     await _firebaseAuth.currentUser!.delete();
+    await _firestoreServices.deleteData(
+      path: ApiPaths.users(userId: _firebaseAuth.currentUser!.uid),
+    );
   }
 
   @override
   Future<void> updatePassword(String newPassword) async {
     await _firebaseAuth.currentUser!.updatePassword(newPassword);
   }
-  
+
   @override
   Future<void> updateEmail(String newEmail) async {
     await _firebaseAuth.currentUser!.verifyBeforeUpdateEmail(newEmail);

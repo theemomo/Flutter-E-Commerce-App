@@ -25,10 +25,12 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       _authServices.getCurrentUser()!.uid,
       false,
     );
-    final PaymentCardModel chosenPaymentCard = paymentCards.firstWhere(
-      (item) => item.isChosen == true,
-      orElse: () => paymentCards.first,
-    );
+
+    final PaymentCardModel? chosenPaymentCard = paymentCards.isNotEmpty
+        ? (paymentCards.any((item) => item.isChosen)
+              ? paymentCards.firstWhere((item) => item.isChosen)
+              : paymentCards.first)
+        : null;
 
     final locations = await _locationServices.fetchLocations(_authServices.getCurrentUser()!.uid);
 

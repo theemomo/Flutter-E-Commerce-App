@@ -70,30 +70,40 @@ class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
   }
 
   Future<void> confirmPaymentMethod() async {
-    emit(PaymentMethodConfirmLoading());
+  emit(PaymentMethodConfirmLoading());
 
-    try {
-      // get the previous card and edit the isChose value to false
-      final PaymentCardModel previousPaymentCard = (await _checkoutServices.fetchPaymentCards(
-        _authServices.getCurrentUser()!.uid,
-        true,
-      )).first.copyWith(isChosen: false);
+  try {
+    final previousPaymentCards = await _checkoutServices.fetchPaymentCards(
+      _authServices.getCurrentUser()!.uid,
+      true,
+    );
 
-      PaymentCardModel chosenPaymentCard = await _checkoutServices.fetchPaymentCard(
-        _authServices.getCurrentUser()!.uid,
-        selectedPaymentId,
-      );
-      // set the chosen card to true
-      chosenPaymentCard = chosenPaymentCard.copyWith(isChosen: true);
-
-      await _checkoutServices.setCard(_authServices.getCurrentUser()!.uid, previousPaymentCard);
-      await _checkoutServices.setCard(_authServices.getCurrentUser()!.uid, chosenPaymentCard);
-
-      emit(PaymentMethodConfirmed(confirmedPaymentMethod: chosenPaymentCard));
-    } catch (e) {
-      PaymentMethodConfirmFailure(e.toString());
+    PaymentCardModel? previousPaymentCard;
+    if (previousPaymentCards.isNotEmpty) {
+      previousPaymentCard = previousPaymentCards.first.copyWith(isChosen: false);
     }
+
+    // fetch selected card
+    PaymentCardModel chosenPaymentCard = await _checkoutServices.fetchPaymentCard(
+      _authServices.getCurrentUser()!.uid,
+      selectedPaymentId,
+    );
+
+    // set the chosen card to true
+    chosenPaymentCard = chosenPaymentCard.copyWith(isChosen: true);
+
+    // update in DB
+    if (previousPaymentCard != null) {
+      await _checkoutServices.setCard(_authServices.getCurrentUser()!.uid, previousPaymentCard);
+    }
+    await _checkoutServices.setCard(_authServices.getCurrentUser()!.uid, chosenPaymentCard);
+
+    emit(PaymentMethodConfirmed(confirmedPaymentMethod: chosenPaymentCard));
+  } catch (e) {
+    emit(PaymentMethodConfirmFailure(e.toString()));
   }
+}
+
 
   Future<void> deletePaymentCard(String cardId) async {
     await _checkoutServices.deletePaymentCard(_authServices.getCurrentUser()!.uid, cardId);
